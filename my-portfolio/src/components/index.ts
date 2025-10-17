@@ -1,0 +1,11 @@
+export { Header } from "./layout/Header";
+export { Footer } from "./layout/Footer";
+export { Section } from "./layout/Section";
+export { Hero } from "./sections/Hero";
+export { Projects } from "./sections/Projects";
+export { Skills } from "./sections/Skills";
+export { Experience } from "./sections/Experience";
+export { CompetitiveProgramming } from "./sections/CompetitiveProgramming";
+export { Contact } from "./sections/Contact";
+export { ProjectCard } from "./ui/ProjectCard";
+export { Tag } from "./ui/Tag";
