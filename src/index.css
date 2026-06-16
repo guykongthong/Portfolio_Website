@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Design tokens — "The Exhibition" (Tailwind v4 @theme)
+   Exposes utilities like bg-ink, text-bone, text-accent, font-display, font-mono
+   ────────────────────────────────────────────────────────────────────────── */
+@theme {
+  --color-ink: #0b0b0b; /* gallery floor / page background */
+  --color-wall: #151515; /* raised panel / card surface */
+  --color-wall-2: #1c1c1c; /* secondary panel */
+  --color-hairline: #2a2a2a; /* frame borders */
+  --color-bone: #ededed; /* primary text */
+  --color-ash: #8a8a8a; /* muted text */
+  --color-faint: #5a5a5a; /* faintest text / dividers */
+  --color-accent: #df3b34; /* gallery crimson */
+  --color-accent-dim: #8f2a26;
+
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+}
+
+/* ── Base ── */
+:root {
+  font-family: var(--font-display);
+  line-height: 1.5;
+  color: var(--color-bone);
+  background-color: var(--color-ink);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-ink);
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+/* Thin gallery scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-hairline);
+  border: 3px solid var(--color-ink);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-faint);
+}
+
+/* ── Film grain overlay texture ──
+   data-uri fractal noise; very low opacity, fixed, pointer-events off */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* Edge vignette so the gallery walls fall into shadow */
+.vignette::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 90% at 50% 38%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+}
+
+/* Vertical spine label for placards */
+.vertical-rl {
+  writing-mode: vertical-rl;
+}
+
+/* Respect reduced motion for CSS-driven transitions */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
