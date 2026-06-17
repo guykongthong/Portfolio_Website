@@ -43,6 +43,12 @@ export interface Accolade {
   kind: "certification" | "award";
 }
 
+export interface Extracurricular {
+  role: string;
+  organization: string;
+  institution: string;
+}
+
 export const profile = {
   name: { first: "Virawit", nick: "Guy", last: "Kongthong" },
   role: "Software Engineer",
@@ -138,6 +144,7 @@ export const projects: Project[] = [
 
 export const skills: SkillRow[] = [
   { label: "Languages", items: ["Java", "Python", "JavaScript", "TypeScript", "C++"] },
+  { label: "Spoken", items: ["Thai — Native", "English — Fluent (IELTS 7.5)"] },
   {
     label: "Web",
     items: [
@@ -167,6 +174,24 @@ export const skills: SkillRow[] = [
     ],
   },
   { label: "Tools", items: ["Git", "GitHub", "GitLab", "Postman", "Figma"] },
+];
+
+export const extracurriculars: Extracurricular[] = [
+  {
+    role: "President",
+    organization: "CAMT Badminton Club",
+    institution: "Chiang Mai University",
+  },
+  {
+    role: "Head of Creative Production",
+    organization: "Student Council",
+    institution: "Chiang Mai University",
+  },
+  {
+    role: "Head of Photography",
+    organization: "Lanna International School",
+    institution: "Lanna International School",
+  },
 ];
 
 export const accolades: Accolade[] = [
