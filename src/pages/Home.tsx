@@ -8,6 +8,7 @@ import Featured from "../sections/Featured";
 import Materials from "../sections/Materials";
 import Provenance from "../sections/Provenance";
 import Recognition from "../sections/Recognition";
+import Activities from "../sections/Activities";
 
 /**
  * "The Exhibition" — a software engineering CV arranged as a dark gallery.
@@ -25,6 +26,7 @@ export default function Home() {
         <Materials />
         <Provenance />
         <Recognition />
+        <Activities />
       </main>
       <Footer />
     </div>

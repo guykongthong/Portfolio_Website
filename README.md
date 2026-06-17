@@ -24,7 +24,7 @@ src/
   data/cv.ts            # single source of truth for all CV content
   components/           # reusable pieces (Frame, Placard, Nav, Footer, Reveal, ...)
   sections/             # Hero, Statement, Exhibitions, Featured, Materials,
-                        #   Provenance, Recognition
+                        #   Provenance, Recognition, Activities
   pages/Home.tsx        # composes the full exhibition
   index.css             # @theme tokens + base + grain/vignette
 ```
