@@ -47,6 +47,7 @@ export interface Extracurricular {
   role: string;
   organization: string;
   institution: string;
+  icon: "users" | "trophy" | "camera"; // each entry names its own placard icon
 }
 
 export const profile = {
@@ -181,16 +182,19 @@ export const extracurriculars: Extracurricular[] = [
     role: "President",
     organization: "CAMT Badminton Club",
     institution: "Chiang Mai University",
+    icon: "users",
   },
   {
     role: "Head of Creative Production",
     organization: "Student Council",
     institution: "Chiang Mai University",
+    icon: "trophy",
   },
   {
     role: "Head of Photography",
     organization: "Lanna International School",
     institution: "Lanna International School",
+    icon: "camera",
   },
 ];
 

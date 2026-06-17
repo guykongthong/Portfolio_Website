@@ -1,10 +1,11 @@
 import { Camera, Trophy, Users } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { extracurriculars } from "../data/cv";
 import SectionHeader from "../components/SectionHeader";
 import Frame from "../components/Frame";
 import Reveal from "../components/Reveal";
 
-const icons = [Users, Trophy, Camera];
+const iconMap: Record<string, LucideIcon> = { users: Users, trophy: Trophy, camera: Camera };
 
 /**
  * Extracurricular leadership as side-room exhibits — brief, framed, typographic.
@@ -20,7 +21,7 @@ export default function Activities() {
 
         <div className="grid gap-8 md:grid-cols-3">
           {extracurriculars.map((a, i) => {
-            const Icon = icons[i] ?? Users;
+            const Icon = iconMap[a.icon] ?? Users;
             return (
               <Reveal key={a.role + a.organization} delay={i * 0.06}>
                 <Frame className="h-full">
