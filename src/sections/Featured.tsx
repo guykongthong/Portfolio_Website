@@ -1,4 +1,3 @@
-import { ArrowUpRight } from "lucide-react";
 import { projects } from "../data/cv";
 import SectionHeader from "../components/SectionHeader";
 import Frame from "../components/Frame";
@@ -23,10 +22,7 @@ export default function Featured() {
               <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
                 {/* placard column */}
                 <div className="lg:border-r lg:border-hairline lg:pr-10">
-                  <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-accent">
-                    Oil on production
-                  </span>
-                  <h3 className="mt-4 font-display text-4xl font-light leading-[1.02] text-bone sm:text-5xl">
+                  <h3 className="font-display text-4xl font-light leading-[1.02] text-bone sm:text-5xl">
                     {p.name}
                   </h3>
                   <p className="mt-3 font-mono text-[12px] tracking-[0.08em] text-ash">{p.meta}</p>
@@ -45,21 +41,6 @@ export default function Featured() {
                         </span>
                       ))}
                     </div>
-                  </div>
-
-                  <div className="mt-8 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-bone">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
-                    Live in production
-                    {p.liveHref && (
-                      <a
-                        href={p.liveHref}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="ml-1 inline-flex items-center gap-1 text-accent hover:underline"
-                      >
-                        Visit <ArrowUpRight className="h-3 w-3" />
-                      </a>
-                    )}
                   </div>
                 </div>
 

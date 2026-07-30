@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A single-page personal portfolio that presents a software engineering CV through the design language of a dark art gallery: each CV section is an "exhibit," each role/project a framed "piece" with a museum-style placard. React 19 + TypeScript + Vite 7 + Tailwind CSS v4, motion by framer-motion, icons by lucide-react. Deployed as a static site on Railway.
+A single-page personal portfolio that presents a software engineering CV through the design language of a dark art gallery: each CV section is an "exhibit," each role/project a framed "piece" with a museum-style placard. React 19 + TypeScript + Vite 7 + Tailwind CSS v4, motion by framer-motion, icons by lucide-react. Deployed as a static site on Vercel.
 
 ## Commands
 
@@ -13,7 +13,6 @@ npm run dev      # Vite dev server
 npm run build    # production build to dist/
 npm run preview  # serve the built dist/ locally
 npm run lint     # eslint over the repo
-npm start        # serve -s dist on $PORT (what Railway runs)
 ```
 
 There is no test suite. Type checking happens through the editor / `tsc`; `npm run build` runs `vite build` directly.
@@ -36,13 +35,13 @@ framer-motion with `prefers-reduced-motion` support. Note a v12 typing gotcha: c
 
 ## Deployment
 
-Railway via Nixpacks. `railway.json` sets build (`npm run build`) and start (`serve -s dist -l tcp://0.0.0.0:$PORT`); `serve` is a runtime dependency. Live URL: https://portfolio-website-guykongthong.up.railway.app
+Vercel, linked via `vercel.json` (`framework: vite`, build `npm run build`, output `dist`). Deploy with `npx vercel --prod` from this directory (requires `vercel login` once per machine). Live URL: https://portfoliowebsite-teal-ten.vercel.app
 
-If you add a dependency, keep `package-lock.json` in sync (`npm install --package-lock-only`) so Railway's `npm ci` does not fail.
+If you add a dependency, keep `package-lock.json` in sync (`npm install --package-lock-only`) so Vercel's install step does not fail.
 
 ## Build caveat
 
-`vite build` may hang at "transforming..." at 0% CPU in some local/background-job sessions due to an esbuild service-mode IPC stall — this is environmental, not a code defect. When a local build hangs, verify via the dev server and rely on the Railway cloud build for real verification rather than assuming the code is broken.
+`vite build` may hang at "transforming..." at 0% CPU in some local/background-job sessions due to an esbuild service-mode IPC stall — this is environmental, not a code defect. When a local build hangs, verify via the dev server and rely on the Vercel cloud build for real verification rather than assuming the code is broken.
 
 ## Branch workflow
 

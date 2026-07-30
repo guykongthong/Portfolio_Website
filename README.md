@@ -38,31 +38,26 @@ npm run build    # type-safe production build to dist/
 npm run preview  # preview the production build locally
 ```
 
-## Deployment (Railway)
+## Deployment (Vercel)
 
-The repo is configured to deploy as a static site on **Railway** via Nixpacks.
+The repo is configured to deploy as a static site on **Vercel**.
 
-- `railway.json` sets the build command (`npm run build`) and start command
-  (`serve -s dist -l tcp://0.0.0.0:$PORT`).
-- `serve` is a runtime dependency; `npm start` serves `dist/` on `$PORT`.
+- `vercel.json` sets the framework (`vite`), build command (`npm run build`), and
+  output directory (`dist`).
 
 ### First-time setup
 
 1. Push this repo to GitHub (see branch workflow below).
-2. In Railway: **New Project → Deploy from GitHub repo** and pick this repository.
-3. Railway reads `railway.json` automatically — no extra config needed. It will run
-   `npm install`, `npm run build`, then `npm start`.
-4. Under the service **Settings → Networking**, click **Generate Domain** to get a
-   public URL.
+2. In Vercel: **Add New → Project → Import Git Repository** and pick this repository,
+   or link it from the CLI (below).
+3. Vercel reads `vercel.json` automatically — no extra config needed.
 
-### Or via the Railway CLI
+### Or via the Vercel CLI
 
 ```bash
-npm i -g @railway/cli
-railway login
-railway init        # create/link a project
-railway up          # build & deploy
-railway domain      # attach a public domain
+npx vercel login
+npx vercel link     # create/link a project
+npx vercel --prod   # build & deploy to production
 ```
 
 ## Branch workflow

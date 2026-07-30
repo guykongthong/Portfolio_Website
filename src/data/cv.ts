@@ -57,12 +57,11 @@ export const profile = {
   years: "2024 — 2026",
   location: "Chiang Mai, Thailand",
   summary:
-    "Third-year Software Engineering student at Chiang Mai University with production " +
-    "backend experience, three Teaching Assistant roles, and a national-level ACM ICPC " +
-    "Thailand competitor. Designs and deploys RESTful backend systems using Node.js, " +
-    "Express, MySQL, Docker, and AWS EC2 with automated CI/CD pipelines. Comfortable " +
-    "across the backend-to-infrastructure stack with a growing focus on cloud and DevOps " +
-    "practices.",
+    "Third-year Software Engineering student at Chiang Mai University with hands-on " +
+    "backend experience across three freelance/internship roles, three Teaching Assistant " +
+    "positions, and a national ACM ICPC Thailand round. Build and deploy backend systems " +
+    "with Node.js, Express, MySQL, Docker, and AWS EC2, and I'm picking up more of the " +
+    "infrastructure and cloud side as I go.",
 };
 
 export const contacts: ContactLink[] = [
@@ -86,19 +85,18 @@ export const experiences: Experience[] = [
       "SE102: Abstract Data Types & Problem Solving · SE233: Advanced Programming · 953212: Database Systems & Design",
     medium: "Java · JavaFX · SQL · ER Modeling",
     bullets: [
-      "Mentor and instruct 90+ students across three courses spanning ADTs and modular Java design, advanced programming concepts (JavaFX, multithreading, exception handling, unit testing, build automation), and relational database systems.",
-      "Lead lab sessions guiding students through Java implementation, event-driven GUI programming, thread synchronization, SQL queries, ER modeling, and schema normalization.",
-      "Evaluate and grade assignments and exams, providing structured feedback on algorithmic design, code quality, and database design correctness.",
+      "Teach and mentor 90+ students across three courses: ADTs and Java design, advanced programming (JavaFX, multithreading, testing, build automation), and relational database systems.",
+      "Run lab sessions on Java implementation, SQL queries, and ER modeling, and grade assignments/exams with feedback on code quality and design correctness.",
     ],
   },
   {
-    role: "Backend Engineering Intern",
+    role: "Backend Developer Intern",
     institution: "CompLaunch",
     date: "Oct 2025 — Dec 2025",
     medium: "Python · REST APIs · Unit Testing",
     bullets: [
-      "Engineered a Python-based tournament management system with 20+ RESTful API endpoints handling single elimination, double elimination, and round-robin bracket logic.",
-      "Developed unit tests to validate core tournament logic and bracket generation across multiple edge cases.",
+      "Built a Python-based tournament management system with 20+ REST endpoints covering single elimination, double elimination, and round-robin bracket logic.",
+      "Wrote unit tests for the bracket logic to catch edge cases before they hit production.",
     ],
   },
   {
@@ -107,11 +105,20 @@ export const experiences: Experience[] = [
     date: "Freelance · May 2026 — Present",
     medium: "React 18 · TypeScript · TanStack · Tailwind v4",
     bullets: [
-      "Building the frontend for a public-interest content platform where submissions are verified through an AI-assisted review pipeline before publishing.",
-      "Designed wireframes and interactive prototypes in Figma, covering end-to-end user flows before implementation.",
-      "Developing a responsive, bilingual (i18n) UI using React 18, TypeScript, TanStack Router, and Tailwind CSS v4 with file-based routing and server state managed via TanStack Query.",
-      "Implementing form validation with React Hook Form + Zod and file upload flows with authentication-aware API integration via Axios interceptors.",
-      "Working in an Agile development workflow with weekly team meetings for sprint planning, progress reviews, and iterative feedback.",
+      "Building the frontend for a public-interest content platform where submissions go through an AI-assisted review pipeline before publishing.",
+      "Designed Figma wireframes and prototypes for the end-to-end user flows, then built a bilingual (i18n) UI in React 18, TypeScript, TanStack Router, and Tailwind CSS v4.",
+      "Handling form validation (React Hook Form + Zod), file uploads, and authenticated API calls via Axios interceptors, in a weekly Agile sprint cycle.",
+    ],
+  },
+  {
+    role: "Backend Developer",
+    institution: "CCMX 2027 (Chiang Mai University)",
+    date: "Freelance · Jul 2026 — Aug 2026",
+    medium: "Cloudflare Workers · Hono · Supabase · Postgres RLS",
+    bullets: [
+      "Backend developer on CCMX 2027, a conference registration and abstract submission platform for a CMU-affiliated academic conference serving 300-600 medical professionals.",
+      "Implementing the Cloudflare Workers + Hono API within the project's layered architecture and three-layer security model (Supabase Auth JWT, in-app RBAC checks, Postgres RLS as a backstop).",
+      "Built the shared request/response scaffolding (request-id middleware, error handling, response envelope) and endpoints for registration, invite codes, payment-slip review, and abstract submission, tracked in Jira.",
     ],
   },
 ];
@@ -134,11 +141,10 @@ export const projects: Project[] = [
     meta: "4-Person Team · End-of-Semester Project",
     stack: ["Node.js", "Express", "EJS", "MySQL", "Docker Compose", "GitHub Actions", "AWS EC2"],
     bullets: [
-      "Solely responsible for the entire backend, database, and infrastructure on a 4-person team; teammates handled UI/UX and frontend.",
-      "Engineered a RESTful API with token-based authentication covering user auth (email verification + password reset), product catalog, cart/checkout, and order management, deployed live and fully functional in production.",
-      "Optimized database performance by indexing frequently queried fields, resulting in near-instant API responses; product additions via the admin dashboard reflected on the customer side in real time.",
-      "Architected image storage using Supabase Storage with URL references in MySQL, avoiding binary data in the relational database and keeping queries lean.",
-      "Containerized the application with Docker Compose and built a GitHub Actions CI/CD pipeline automating deployment to AWS EC2 on every push to main.",
+      "Sole backend/infrastructure owner on a 4-person team; teammates handled UI/UX and frontend.",
+      "Built a REST API with token-based auth (email verification, password reset), product catalog, cart/checkout, and order management, deployed to production on AWS.",
+      "Indexed frequently-queried fields to cut down query time, and used Supabase Storage with URL references in MySQL to keep product images out of the database.",
+      "Containerized with Docker Compose and set up a GitHub Actions pipeline to auto-deploy to AWS EC2 on every push to main.",
     ],
   },
 ];
@@ -151,17 +157,16 @@ export const skills: SkillRow[] = [
     items: [
       "Node.js",
       "Express",
+      "Hono",
       "React",
+      "Vue.js",
       "REST APIs",
-      "TanStack Query",
-      "Zustand",
-      "Zod",
-      "Tailwind CSS",
+      "OpenAPI",
       "Bootstrap",
       "EJS",
     ],
   },
-  { label: "Databases", items: ["MySQL", "PostgreSQL", "Supabase"] },
+  { label: "Databases", items: ["MySQL", "PostgreSQL", "Supabase (Auth, Storage, Row Level Security)"] },
   {
     label: "DevOps / Cloud",
     items: [
@@ -171,10 +176,11 @@ export const skills: SkillRow[] = [
       "GitHub Actions",
       "CI/CD",
       "AWS EC2",
+      "Cloudflare Workers",
       "Linux",
     ],
   },
-  { label: "Tools", items: ["Git", "GitHub", "GitLab", "Postman", "Figma"] },
+  { label: "Tools", items: ["Git", "GitHub", "GitLab", "Postman", "Figma", "Jira"] },
 ];
 
 export const extracurriculars: Extracurricular[] = [
@@ -186,7 +192,7 @@ export const extracurriculars: Extracurricular[] = [
   },
   {
     role: "Head of Creative Production",
-    organization: "Student Council",
+    organization: "CAMT Student Council",
     institution: "Chiang Mai University",
     icon: "trophy",
   },
