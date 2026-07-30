@@ -29,7 +29,7 @@ export default function Nav() {
           </span>
         </a>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden items-center gap-7 lg:flex">
           {links.map((l) => (
             <a
               key={l.href}
@@ -47,14 +47,14 @@ export default function Nav() {
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
-          className="text-bone md:hidden"
+          className="text-bone lg:hidden"
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
       {open && (
-        <nav className="flex flex-col border-t border-hairline/60 bg-ink px-6 py-4 md:hidden">
+        <nav className="flex flex-col border-t border-hairline/60 bg-ink px-6 py-4 lg:hidden">
           {links.map((l) => (
             <a
               key={l.href}
