@@ -202,18 +202,6 @@ export const projects: Project[] = [
     media: [],
   },
   {
-    name: "Laptop Keyboard Comparison Report",
-    tag: "Personal",
-    date: "2026",
-    meta: "Personal · Data-Driven Study",
-    liveHref: "https://github.com/guykongthongcmu/laptop-keyboard-comparison-report",
-    stack: ["Python", "Data Analysis"],
-    bullets: [
-      "A data-driven typing performance study comparing typing performance across different laptop keyboards.",
-    ],
-    media: [],
-  },
-  {
     name: "This Portfolio Website",
     tag: "Personal",
     date: "2026",
