@@ -2,8 +2,8 @@ import { profile } from "../data/cv";
 
 const links = [
   { label: "Statement", href: "#statement" },
-  { label: "Exhibitions", href: "#exhibitions" },
-  { label: "Featured", href: "#featured" },
+  { label: "Work", href: "#work" },
+  { label: "Projects", href: "#projects" },
   { label: "Materials", href: "#materials" },
   { label: "Provenance", href: "#provenance" },
   { label: "Activities", href: "#activities" },

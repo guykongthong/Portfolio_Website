@@ -4,14 +4,14 @@ import Footer from "../components/Footer";
 import Hero from "../sections/Hero";
 import Statement from "../sections/Statement";
 import Exhibitions from "../sections/Exhibitions";
-import Featured from "../sections/Featured";
+import Projects from "../sections/Projects";
 import Materials from "../sections/Materials";
 import Provenance from "../sections/Provenance";
 import Recognition from "../sections/Recognition";
 import Activities from "../sections/Activities";
 
 /**
- * "The Exhibition" — a software engineering CV arranged as a dark gallery.
+ * "The Exhibition" — a software engineering CV arranged as a minimalist gallery.
  */
 export default function Home() {
   return (
@@ -22,7 +22,7 @@ export default function Home() {
         <Hero />
         <Statement />
         <Exhibitions />
-        <Featured />
+        <Projects />
         <Materials />
         <Provenance />
         <Recognition />

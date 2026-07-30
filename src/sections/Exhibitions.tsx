@@ -11,7 +11,7 @@ import Reveal from "../components/Reveal";
 export default function Exhibitions() {
   return (
     <section
-      id="exhibitions"
+      id="work"
       className="scroll-mt-24 border-t border-hairline/60 px-6 py-24 sm:px-10 sm:py-32"
     >
       <div className="mx-auto max-w-6xl">
