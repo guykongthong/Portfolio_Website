@@ -274,6 +274,11 @@ export const extracurriculars: Extracurricular[] = [
 export const accolades: Accolade[] = [
   { name: "Claude Code Certification, Anthropic", year: "2026", kind: "certification" },
   {
+    name: "ACM ICPC Northern Thailand Regional Round — competed as part of a 3-person team and advanced to the National Round",
+    year: "2026",
+    kind: "award",
+  },
+  {
     name: "ACM ICPC Thailand National Round — competed as part of a 3-person team against universities across Thailand at King Mongkut's University of Technology Ladkrabang",
     year: "2025",
     kind: "award",
