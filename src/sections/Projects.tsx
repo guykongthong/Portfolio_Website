@@ -22,7 +22,10 @@ export default function Projects() {
         <div className="flex flex-col gap-16">
           {projects.map((p, i) => (
             <Reveal key={p.name}>
-              <Frame index={String(i + 1).padStart(2, "0")} className="overflow-hidden">
+              <Frame
+                index={String(i + 1).padStart(2, "0")}
+                plaque={`${p.name.toUpperCase()} · ${p.tag.toUpperCase()} · ${p.date}`}
+              >
                 <div
                   className={`grid gap-10 lg:grid-cols-2 ${
                     i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""
