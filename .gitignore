@@ -24,3 +24,6 @@ pnpm-debug.log*
 *.suo
 *.sw?
 .vercel
+
+# Git worktrees
+.worktrees/
