@@ -5,15 +5,15 @@
    Exposes utilities like bg-ink, text-bone, text-accent, font-display, font-mono
    ────────────────────────────────────────────────────────────────────────── */
 @theme {
-  --color-ink: #0b0b0b; /* gallery floor / page background */
-  --color-wall: #151515; /* raised panel / card surface */
-  --color-wall-2: #1c1c1c; /* secondary panel */
-  --color-hairline: #2a2a2a; /* frame borders */
-  --color-bone: #ededed; /* primary text */
-  --color-ash: #8a8a8a; /* muted text */
-  --color-faint: #5a5a5a; /* faintest text / dividers */
-  --color-accent: #df3b34; /* gallery crimson */
-  --color-accent-dim: #8f2a26;
+  --color-ink: #f5f1ea; /* gallery wall / page background — warm off-white */
+  --color-wall: #ece6da; /* raised panel / card surface */
+  --color-wall-2: #e3dbca; /* secondary panel */
+  --color-hairline: #d8d0c0; /* frame borders */
+  --color-bone: #1c1b19; /* primary text — soft charcoal */
+  --color-ash: #6b6862; /* muted text */
+  --color-faint: #9c968a; /* faintest text / dividers */
+  --color-accent: #b8863b; /* soft ochre */
+  --color-accent-dim: #8f6a2e;
 
   --font-display: "Fraunces", Georgia, "Times New Roman", serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
@@ -81,23 +81,9 @@ a {
   inset: 0;
   z-index: 60;
   pointer-events: none;
-  opacity: 0.045;
+  opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 160px 160px;
-}
-
-/* Edge vignette so the gallery walls fall into shadow */
-.vignette::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 55;
-  pointer-events: none;
-  background: radial-gradient(
-    120% 90% at 50% 38%,
-    transparent 55%,
-    rgba(0, 0, 0, 0.5) 100%
-  );
 }
 
 /* Vertical spine label for placards */

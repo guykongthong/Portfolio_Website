@@ -1,8 +1,8 @@
 /**
- * Atmosphere layer for the whole page: film grain + edge vignette.
- * Both effects are pure CSS pseudo-elements (see .grain / .vignette in index.css)
- * and sit above content but ignore pointer events.
+ * Atmosphere layer for the whole page: a faint paper-grain texture.
+ * Pure CSS pseudo-element (see .grain in index.css); sits above content but
+ * ignores pointer events.
  */
 export default function GrainOverlay() {
-  return <div className="grain vignette" aria-hidden="true" />;
+  return <div className="grain" aria-hidden="true" />;
 }
