@@ -25,7 +25,7 @@ export default function TechIcon({ icon: Icon, label }: TechIconProps) {
   return (
     <div className="group flex w-20 flex-col items-center gap-2">
       <Icon className="h-7 w-7 text-ash transition-all duration-300 group-hover:-translate-y-1 group-hover:text-accent" />
-      <span className="max-w-[80px] text-center font-mono text-[9px] uppercase leading-tight tracking-[0.08em] text-faint opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+      <span className="max-w-[80px] text-center font-mono text-[9px] uppercase leading-tight tracking-[0.08em] text-faint">
         {label}
       </span>
     </div>

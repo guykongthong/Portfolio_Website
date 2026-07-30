@@ -84,20 +84,36 @@ export default function Materials() {
         <SectionHeader room="III" kicker="Tools & Techniques" title="Materials" />
 
         <div className="divide-y divide-hairline border-y border-hairline">
-          {skills.map((row, i) => (
-            <Reveal key={row.label} delay={i * 0.04}>
-              <div className="grid grid-cols-1 gap-5 py-8 sm:grid-cols-[200px_1fr] sm:gap-8">
-                <p className="font-mono text-[12px] uppercase tracking-[0.22em] text-accent">
-                  {row.label}
-                </p>
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
-                  {row.items.map((item) => (
-                    <TechIcon key={item} icon={iconMap[item]} label={item} />
-                  ))}
+          {skills.map((row, i) => {
+            const withIcon = row.items.filter((item) => iconMap[item]);
+            const withoutIcon = row.items.filter((item) => !iconMap[item]);
+            return (
+              <Reveal key={row.label} delay={i * 0.04}>
+                <div className="grid grid-cols-1 gap-5 py-8 sm:grid-cols-[200px_1fr] sm:gap-8">
+                  <p className="font-mono text-[12px] uppercase tracking-[0.22em] text-accent">
+                    {row.label}
+                  </p>
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+                    {withIcon.map((item) => (
+                      <TechIcon key={item} icon={iconMap[item]} label={item} />
+                    ))}
+                    {withoutIcon.length > 0 && (
+                      <>
+                        {withIcon.length > 0 && (
+                          <span aria-hidden="true" className="h-8 w-px bg-hairline" />
+                        )}
+                        <div className="flex flex-wrap items-center gap-2">
+                          {withoutIcon.map((item) => (
+                            <TechIcon key={item} icon={undefined} label={item} />
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </Reveal>
-          ))}
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>
