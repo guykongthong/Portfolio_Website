@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A single-page personal portfolio that presents a software engineering CV through the design language of a dark art gallery: each CV section is an "exhibit," each role/project a framed "piece" with a museum-style placard. React 19 + TypeScript + Vite 7 + Tailwind CSS v4, motion by framer-motion, icons by lucide-react. Deployed as a static site on Vercel.
+A single-page personal portfolio that presents a software engineering CV through the design language of a minimalist gallery exhibit: each CV section is an "exhibit," each role/project a framed "piece" with a museum-style placard, on a warm off-white/charcoal palette with a soft ochre accent. React 19 + TypeScript + Vite 7 + Tailwind CSS v4, motion by framer-motion, icons by lucide-react and react-icons. Deployed as a static site on Vercel.
 
 ## Commands
 
@@ -20,12 +20,12 @@ There is no test suite. Type checking happens through the editor / `tsc`; `npm r
 ## Architecture
 
 - **Content is data, not markup.** Every CV fact (profile, contacts, experiences, education, projects, skills, accolades) lives in `src/data/cv.ts` as typed exports. This is the single source of truth — edit it to change site content. Sections in `src/sections/` render from these exports; do not hardcode CV text into components.
-- **Composition.** `src/pages/Home.tsx` composes `Nav` + `GrainOverlay` + all sections + `Footer` inside a `bg-ink text-bone` shell. `src/sections/` holds one file per exhibit (Hero, Statement, Exhibitions, Featured, Materials, Provenance, Recognition, Activities). `src/components/` holds reusable pieces: `Frame` (picture-frame card), `Placard` (museum label), `Reveal` (scroll-in wrapper), `Nav`, `Footer`, `GrainOverlay`, `SectionHeader`.
+- **Composition.** `src/pages/Home.tsx` composes `Nav` + `GrainOverlay` + all sections + `Footer` inside a `bg-ink text-bone` shell. `src/sections/` holds one file per exhibit (Hero, Statement, Exhibitions, Projects, Materials, Provenance, Recognition, Activities). `src/components/` holds reusable pieces: `Frame` (picture-frame card), `Placard` (museum label), `ProjectMedia` (project image/video/placeholder), `TechIcon` (Materials icon tile), `Reveal` (scroll-in wrapper), `Nav`, `Footer`, `GrainOverlay`, `SectionHeader`.
 - **Entry point** is `src/main.jsx` (mixed `.jsx`/`.tsx` in the tree is intentional and fine).
 
 ## Tailwind v4 — important
 
-This is **Tailwind v4** (`@tailwindcss/postcss`, `@import "tailwindcss"`). v4 does **not** auto-load `tailwind.config.js`. Design tokens are defined in the `@theme` block in `src/index.css`, which is what generates utilities like `bg-ink`, `bg-wall`, `text-bone`, `text-ash`, `text-faint`, `text-accent`, `font-display`, `font-mono`. To add or change a color/font, edit the `@theme` block — not `tailwind.config.js`. The accent is gallery crimson (`--color-accent: #df3b34`), used sparingly.
+This is **Tailwind v4** (`@tailwindcss/postcss`, `@import "tailwindcss"`). v4 does **not** auto-load `tailwind.config.js`. Design tokens are defined in the `@theme` block in `src/index.css`, which is what generates utilities like `bg-ink`, `bg-wall`, `text-bone`, `text-ash`, `text-faint`, `text-accent`, `font-display`, `font-mono`. To add or change a color/font, edit the `@theme` block — not `tailwind.config.js`. The palette is warm off-white/charcoal (`--color-ink: #f5f1ea` background, `--color-bone: #1c1b19` text) with a soft ochre accent (`--color-accent: #b8863b`), used sparingly.
 
 Fonts: **Fraunces** (display/body serif) and **IBM Plex Mono** (placards, labels, metadata), loaded from Google Fonts in `index.html`. Do not reintroduce the old `Anantason` font — it does not exist on Google Fonts and silently falls back to sans-serif.
 
