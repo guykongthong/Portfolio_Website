@@ -11,9 +11,10 @@ interface FrameProps {
 
 /**
  * A piece hung on the gallery wall: a thick black picture frame around a white
- * mat, with an ochre edge that lights up on hover. The exhibit number sits in
- * the top-left like a wall label; an optional plaque is mounted at the
- * bottom-center of the frame like a museum label screwed to the frame itself.
+ * mat that lifts slightly on hover, with a soft ochre glow behind it — the
+ * frame itself stays black. The exhibit number sits in the top-left like a
+ * wall label; an optional plaque is mounted at the bottom-center of the frame
+ * like a museum label screwed to the frame itself.
  */
 export default function Frame({ children, index, plaque, className = "" }: FrameProps) {
   return (
@@ -25,7 +26,7 @@ export default function Frame({ children, index, plaque, className = "" }: Frame
         style={{ background: "var(--color-accent)" }}
       />
 
-      <div className="relative rounded-[2px] border-[10px] border-frame bg-white shadow-[0_18px_40px_-24px_rgba(28,27,25,0.18)] transition-all duration-500 group-hover:-translate-y-1 group-hover:border-accent/60">
+      <div className="relative rounded-[2px] border-[10px] border-frame bg-white shadow-[0_18px_40px_-24px_rgba(28,27,25,0.18)] transition-all duration-500 group-hover:-translate-y-1">
         {/* inner mat */}
         <div className="relative rounded-[1px] border border-black/[0.03] p-7 sm:p-9">
           {index && (
