@@ -27,6 +27,22 @@ export default function Provenance() {
                     {e.detail}
                   </p>
                 )}
+                {e.coursework && (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {e.coursework.map((c, j) => (
+                      <span
+                        key={c}
+                        className={`rounded-full px-3 py-1 font-mono text-[11px] tracking-[0.04em] transition-colors duration-300 ${
+                          j < 2
+                            ? "border border-accent/60 text-bone"
+                            : "border border-hairline text-ash hover:border-accent/60 hover:text-bone"
+                        }`}
+                      >
+                        {c}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </Reveal>
           ))}
