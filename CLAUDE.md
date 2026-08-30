@@ -27,7 +27,7 @@ There is no test suite. Type checking happens through the editor / `tsc`; `npm r
 
 This is **Tailwind v4** (`@tailwindcss/postcss`, `@import "tailwindcss"`). v4 does **not** auto-load `tailwind.config.js`. Design tokens are defined in the `@theme` block in `src/index.css`, which is what generates utilities like `bg-ink`, `bg-wall`, `text-bone`, `text-ash`, `text-faint`, `text-accent`, `font-display`, `font-mono`. To add or change a color/font, edit the `@theme` block — not `tailwind.config.js`. The palette is warm off-white/charcoal (`--color-ink: #f5f1ea` background, `--color-bone: #1c1b19` text) with a soft ochre accent (`--color-accent: #b8863b`), used sparingly.
 
-Fonts: **Fraunces** (display/body serif) and **IBM Plex Mono** (placards, labels, metadata), loaded from Google Fonts in `index.html`. Do not reintroduce the old `Anantason` font — it does not exist on Google Fonts and silently falls back to sans-serif.
+Fonts: **Lora** (display/body serif) and **IBM Plex Mono** (placards, labels, metadata), loaded from Google Fonts in `index.html`. Lora only ships weights 400-700 (no true light/300), so the `font-light` classes used throughout headings fall back to the nearest loaded weight (400) rather than rendering an actual thin weight. Do not reintroduce the old `Anantason` font — it does not exist on Google Fonts and silently falls back to sans-serif.
 
 ## Motion
 

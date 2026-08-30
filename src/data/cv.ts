@@ -3,6 +3,18 @@
 // Mirrors Virawit_Kongthong_CV.html. Edit here to update the whole site.
 // ──────────────────────────────────────────────────────────────────────────
 
+import tuExplore from "../assets/projects/tu-frontend/explore.png";
+import tuThreads from "../assets/projects/tu-frontend/threads.png";
+import tuRewards from "../assets/projects/tu-frontend/rewards.png";
+import coolsenseAward from "../assets/projects/coolsense/award-photo.jpg";
+import coolsenseTeam from "../assets/projects/coolsense/team-photo.jpg";
+import coolsenseDemo from "../assets/projects/coolsense/demo.mp4";
+import corecoClientShop from "../assets/projects/coreco/client-shop.mp4";
+import corecoClientCheckout from "../assets/projects/coreco/client-checkout.mp4";
+import corecoAdminDashboard from "../assets/projects/coreco/admin-dashboard.mp4";
+import ccmxLanding from "../assets/projects/ccmx/landing.png";
+import portfolioHero from "../assets/projects/portfolio/hero.png";
+
 export interface ContactLink {
   label: string;
   value: string;
@@ -28,11 +40,13 @@ export interface ProjectMedia {
   type: "image" | "video";
   src: string;
   alt: string;
+  fit?: "cover" | "contain"; // "contain" letterboxes portrait-oriented media instead of cropping it
+  position?: string; // CSS object-position, e.g. "50% 20%" — set via the dev-only reposition overlay
 }
 
 export interface Project {
   name: string;
-  tag: "Coursework" | "Freelance" | "Internship" | "Personal";
+  tag: "Coursework" | "Freelance" | "Internship" | "Personal" | "Hackathon";
   institution?: string;
   date: string;
   meta: string; // "4-Person Team · End-of-Semester Project"
@@ -40,6 +54,7 @@ export interface Project {
   liveHref?: string;
   bullets: string[];
   media: ProjectMedia[]; // empty array renders a placeholder
+  mediaOrientation?: "landscape" | "portrait"; // frame shape; default landscape (16:10)
 }
 
 export interface SkillRow {
@@ -67,11 +82,14 @@ export const profile = {
   years: "2024 — 2026",
   location: "Chiang Mai, Thailand",
   summary:
-    "Third-year Software Engineering student at Chiang Mai University with hands-on " +
-    "backend experience across three freelance/internship roles, three Teaching Assistant " +
-    "positions, and a national ACM ICPC Thailand round. Build and deploy backend systems " +
-    "with Node.js, Express, MySQL, Docker, and AWS EC2, and I'm picking up more of the " +
-    "infrastructure and cloud side as I go.",
+    "Third-year Software Engineering student at Chiang Mai University, focused on the " +
+    "full software development lifecycle, especially software architecture and design, " +
+    "and backend systems. Comfortable across every stage, from requirement analysis and " +
+    "system design through implementation, testing, and deployment, with the most " +
+    "hands-on time spent building and deploying backend systems and REST APIs. Three " +
+    "freelance and internship roles, three Teaching Assistant positions, two national " +
+    "ACM ICPC Thailand rounds, and a 1st-place win at the K-CAMT'26 Hackathon round out " +
+    "the experience.",
 };
 
 export const contacts: ContactLink[] = [
@@ -82,7 +100,7 @@ export const contacts: ContactLink[] = [
     value: "linkedin.com/in/virawit-kongthong",
     href: "https://linkedin.com/in/virawit-kongthong",
   },
-  { label: "Phone", value: "+66 98 261 1258" },
+  { label: "Phone", value: "+66 98 261 2258" },
   { label: "Location", value: "Chiang Mai, Thailand" },
 ];
 
@@ -95,8 +113,8 @@ export const experiences: Experience[] = [
       "SE102: Abstract Data Types & Problem Solving · SE233: Advanced Programming · 953212: Database Systems & Design",
     medium: "Java · JavaFX · SQL · ER Modeling",
     bullets: [
-      "Teach and mentor 90+ students across three courses: ADTs and Java design, advanced programming (JavaFX, multithreading, testing, build automation), and relational database systems.",
-      "Run lab sessions on Java implementation, SQL queries, and ER modeling, and grade assignments/exams with feedback on code quality and design correctness.",
+      "Mentor 90+ students across three courses: ADTs and Java design, advanced programming (JavaFX, multithreading, testing, build automation), and relational database systems.",
+      "Deliver lab sessions on Java implementation, SQL queries, and ER modeling; grade assignments and exams with feedback on code quality and design correctness.",
     ],
   },
   {
@@ -105,8 +123,8 @@ export const experiences: Experience[] = [
     date: "Oct 2025 — Dec 2025",
     medium: "Python · REST APIs · Unit Testing",
     bullets: [
-      "Built a Python-based tournament management system with 20+ REST endpoints covering single elimination, double elimination, and round-robin bracket logic.",
-      "Wrote unit tests for the bracket logic to catch edge cases before they hit production.",
+      "Engineered a Python-based tournament management system with 20+ REST endpoints covering single elimination, double elimination, and round-robin bracket logic.",
+      "Authored unit tests for the bracket logic to catch edge cases before they hit production.",
     ],
   },
   {
@@ -115,9 +133,9 @@ export const experiences: Experience[] = [
     date: "Freelance · May 2026 — Present",
     medium: "React 18 · TypeScript · TanStack · Tailwind v4",
     bullets: [
-      "Building the frontend for a public-interest content platform where submissions go through an AI-assisted review pipeline before publishing.",
-      "Designed Figma wireframes and prototypes for the end-to-end user flows, then built a bilingual (i18n) UI in React 18, TypeScript, TanStack Router, and Tailwind CSS v4.",
-      "Handling form validation (React Hook Form + Zod), file uploads, and authenticated API calls via Axios interceptors, in a weekly Agile sprint cycle.",
+      "Led frontend delivery on a 3-person team to ship a public-interest content platform used by four distinct user roles (member, reviewer, sponsor, admin).",
+      "Migrated all five role-based dashboards from mocked data to a live staging API, redesigning the email verification flow around a real link-token model and replacing silent failure states with real backend error feedback in toasts and alerts.",
+      "Designed Figma wireframes and prototypes for the end-to-end user flows, then implemented a bilingual (i18n) UI in React 18, TypeScript, TanStack Router, and Tailwind CSS v4, with form validation (React Hook Form + Zod), file uploads, and authenticated API calls via Axios interceptors, in weekly Agile sprints.",
     ],
   },
   {
@@ -126,9 +144,9 @@ export const experiences: Experience[] = [
     date: "Freelance · Jul 2026 — Aug 2026",
     medium: "Cloudflare Workers · Hono · Supabase · Postgres RLS",
     bullets: [
-      "Backend developer on CCMX 2027, a conference registration and abstract submission platform for a CMU-affiliated academic conference serving 300-600 medical professionals.",
-      "Implementing the Cloudflare Workers + Hono API within the project's layered architecture and three-layer security model (Supabase Auth JWT, in-app RBAC checks, Postgres RLS as a backstop).",
-      "Built the shared request/response scaffolding (request-id middleware, error handling, response envelope) and endpoints for registration, invite codes, payment-slip review, and abstract submission, tracked in Jira.",
+      "Delivered the backend for a conference registration and abstract submission platform serving 300-600 medical professionals at a CMU-affiliated academic conference.",
+      "Implemented the Cloudflare Workers + Hono API within the project's layered architecture and three-layer security model (Supabase Auth JWT, in-app RBAC checks, Postgres RLS as a backstop).",
+      "Engineered the shared request/response scaffolding (request-id middleware, error handling, response envelope) and endpoints for registration, invite codes, payment-slip review, and abstract submission, tracked in Jira.",
     ],
   },
 ];
@@ -147,18 +165,37 @@ export const education: EducationEntry[] = [
 
 export const projects: Project[] = [
   {
+    name: "CoolSense — Smart AC Occupancy Optimization",
+    tag: "Hackathon",
+    date: "Aug 2026",
+    meta: "5-Person Team · Project Lead · K-CAMT'26 Hackathon: Net-Zero Carbon · Winner",
+    stack: ["Vue.js", "TypeScript", "Supabase", "Deno Edge Functions", "Gemini Vision API", "Vercel"],
+    bullets: [
+      "Led a 5-person team to 1st place, building a smart AC system that adjusts temperature and fan speed in real time based on room occupancy, including live webcam headcounting via Gemini vision.",
+      "Designed and built the core calculation engine (occupancy density → AC mode → weather-adjusted BTU/hr → power draw), iterating it through three revisions to align with real HVAC/SEER physics.",
+      "Built the mock data generator and 168-hour simulation engine comparing the smart system against a static baseline, and led QA/testing that validated a ~30% reduction in energy use and CO₂ emissions.",
+    ],
+    media: [
+      { type: "video", src: coolsenseDemo, alt: "CoolSense — live demo at K-CAMT'26 Hackathon" },
+      { type: "image", src: coolsenseTeam, alt: "CoolSense team accepting the K-CAMT'26 Hackathon win on stage" },
+      { type: "image", src: coolsenseAward, alt: "Net-Zero Grand Champion Award, K-CAMT'26 Hackathon" },
+    ],
+    mediaOrientation: "portrait",
+  },
+  {
     name: "CCMX 2027 Conference Platform",
     tag: "Freelance",
     institution: "Chiang Mai University",
     date: "Jul 2026 — Aug 2026",
     meta: "Freelance · Conference Registration & Abstract Submission Platform",
     stack: ["Cloudflare Workers", "Hono", "Supabase", "Postgres RLS"],
+    liveHref: "https://ccmxcmu.com/",
     bullets: [
-      "Backend developer on CCMX 2027, a conference registration and abstract submission platform for a CMU-affiliated academic conference serving 300-600 medical professionals.",
+      "Delivered the backend for a conference registration and abstract submission platform serving 300-600 medical professionals at a CMU-affiliated academic conference.",
       "Implemented the Cloudflare Workers + Hono API within the project's layered architecture and three-layer security model: Supabase Auth JWT, in-app RBAC checks, and Postgres RLS as a backstop.",
-      "Built the shared request/response scaffolding (request-id middleware, error handling, response envelope) and endpoints for registration, invite codes, payment-slip review, and abstract submission, tracked in Jira.",
+      "Engineered the shared request/response scaffolding (request-id middleware, error handling, response envelope) and endpoints for registration, invite codes, payment-slip review, and abstract submission, tracked in Jira.",
     ],
-    media: [],
+    media: [{ type: "image", src: ccmxLanding, alt: "CCMX 2027 — conference landing page" }],
   },
   {
     name: "TU: The Public Platform",
@@ -168,11 +205,15 @@ export const projects: Project[] = [
     meta: "Freelance · Public-Interest Content Platform",
     stack: ["React 18", "TypeScript", "TanStack Router", "Tailwind CSS v4", "React Hook Form", "Zod", "Axios"],
     bullets: [
-      "Building the frontend for a public-interest content platform where submissions go through an AI-assisted review pipeline before publishing.",
-      "Designed Figma wireframes and prototypes for the end-to-end user flows, then built a bilingual (i18n) UI in React 18, TypeScript, TanStack Router, and Tailwind CSS v4.",
-      "Handling form validation (React Hook Form + Zod), file uploads, and authenticated API calls via Axios interceptors, in a weekly Agile sprint cycle.",
+      "Led frontend delivery on a 3-person team to ship a public-interest content platform used by four distinct user roles (member, reviewer, sponsor, admin).",
+      "Migrated all five role-based dashboards from mocked data to a live staging API, redesigning the email verification flow around a real link-token model and replacing silent failure states with real backend error feedback in toasts and alerts.",
+      "Designed Figma wireframes and prototypes for the end-to-end user flows, then implemented a bilingual (i18n) UI in React 18, TypeScript, TanStack Router, and Tailwind CSS v4, with form validation (React Hook Form + Zod), file uploads, and authenticated API calls via Axios interceptors, in weekly Agile sprints.",
     ],
-    media: [],
+    media: [
+      { type: "image", src: tuExplore, alt: "TU: The Public Platform — Explore page with domain browsing", fit: "contain" },
+      { type: "image", src: tuThreads, alt: "TU: The Public Platform — Threads page listing community-posted issues", fit: "contain" },
+      { type: "image", src: tuRewards, alt: "TU: The Public Platform — Reward Marketplace page", fit: "contain" },
+    ],
   },
   {
     name: "CompLaunch Tournament Management System",
@@ -182,8 +223,8 @@ export const projects: Project[] = [
     meta: "Backend Engineering Internship",
     stack: ["Python", "REST APIs", "Unit Testing"],
     bullets: [
-      "Built a Python-based tournament management system with 20+ REST endpoints covering single elimination, double elimination, and round-robin bracket logic.",
-      "Wrote unit tests for the bracket logic to catch edge cases before they hit production.",
+      "Engineered a Python-based tournament management system with 20+ REST endpoints covering single elimination, double elimination, and round-robin bracket logic.",
+      "Authored unit tests for the bracket logic to catch edge cases before they hit production.",
     ],
     media: [],
   },
@@ -194,12 +235,16 @@ export const projects: Project[] = [
     meta: "4-Person Team · End-of-Semester Project",
     stack: ["Node.js", "Express", "EJS", "MySQL", "Docker Compose", "GitHub Actions", "AWS EC2"],
     bullets: [
-      "Sole backend/infrastructure owner on a 4-person team; teammates handled UI/UX and frontend.",
+      "Owned backend and infrastructure solo on a 4-person team while teammates handled UI/UX and frontend.",
       "Built a REST API with token-based auth (email verification, password reset), product catalog, cart/checkout, and order management, deployed to production on AWS.",
-      "Indexed frequently-queried fields to cut down query time, and used Supabase Storage with URL references in MySQL to keep product images out of the database.",
+      "Indexed frequently-queried fields to reduce query time and integrated Supabase Storage with URL references in MySQL to keep product images out of the database.",
       "Containerized with Docker Compose and set up a GitHub Actions pipeline to auto-deploy to AWS EC2 on every push to main.",
     ],
-    media: [],
+    media: [
+      { type: "video", src: corecoClientShop, alt: "Core&Co — customer-facing product browsing and search" },
+      { type: "video", src: corecoClientCheckout, alt: "Core&Co — customer checkout flow" },
+      { type: "video", src: corecoAdminDashboard, alt: "Core&Co — role-restricted admin dashboard" },
+    ],
   },
   {
     name: "This Portfolio Website",
@@ -212,7 +257,7 @@ export const projects: Project[] = [
       "This CV, presented as a minimalist gallery exhibition rather than a typical developer portfolio.",
       "Built with React 19, TypeScript, and Tailwind CSS v4, with framer-motion handling scroll reveals and transitions.",
     ],
-    media: [],
+    media: [{ type: "image", src: portfolioHero, alt: "This portfolio's own gallery-exhibit hero" }],
   },
 ];
 
@@ -225,6 +270,7 @@ export const skills: SkillRow[] = [
       "Node.js",
       "Express",
       "Hono",
+      "Spring Boot",
       "React",
       "Vue.js",
       "REST APIs",
@@ -263,18 +309,17 @@ export const extracurriculars: Extracurricular[] = [
     institution: "Chiang Mai University",
     icon: "trophy",
   },
-  {
-    role: "Head of Photography",
-    organization: "Lanna International School",
-    institution: "Lanna International School",
-    icon: "camera",
-  },
 ];
 
 export const accolades: Accolade[] = [
-  { name: "Claude Code Certification, Anthropic", year: "2026", kind: "certification" },
+  { name: "1st Place, K-CAMT'26 Hackathon: Net-Zero Carbon — led a 5-person team", year: "2026", kind: "award" },
   {
     name: "ACM ICPC Northern Thailand Regional Round — competed as part of a 3-person team and advanced to the National Round",
+    year: "2026",
+    kind: "award",
+  },
+  {
+    name: "ACM ICPC Thailand National Round — competed as part of a 3-person team against universities across Thailand at Kasetsart University",
     year: "2026",
     kind: "award",
   },
