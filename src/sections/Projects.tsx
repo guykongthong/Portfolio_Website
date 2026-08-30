@@ -55,11 +55,11 @@ function ProjectDetails({ p }: { p: Project }) {
 
 /**
  * The gallery's main floor — every real project as its own full-width room.
- * A project with landscape media (or none yet) gets media and write-up
- * side by side, alternating sides as you walk (scroll) from piece to piece.
- * A project with portrait media (a phone photo/video set, e.g. a hackathon)
- * keeps that same side-by-side frame instead of stacking, since a tall
- * portrait frame already reads as its own "piece" next to the text.
+ * A project with landscape media stacks it full-bleed on top of the write-up
+ * (media reads as the room's main wall, not a side panel). A project with
+ * portrait media (a phone photo/video set, e.g. a hackathon) or no media yet
+ * keeps the side-by-side frame instead, alternating sides as you walk
+ * (scroll) from piece to piece.
  */
 export default function Projects() {
   return (

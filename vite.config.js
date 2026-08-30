@@ -12,6 +12,8 @@ const cvDataPath = fileURLToPath(new URL('./src/data/cv.ts', import.meta.url))
  * Locates a media entry in cv.ts by its (unique) `alt` text and writes/clears its
  * `position` field in place.
  */
+const POSITION_PATTERN = /^\d{1,3}% \d{1,3}%$/
+
 function mediaRepositionPlugin() {
   return {
     name: 'media-reposition',
@@ -23,6 +25,16 @@ function mediaRepositionPlugin() {
           return
         }
 
+        // Reject cross-origin requests (e.g. a malicious page open in another tab
+        // while `npm run dev` is running) — browsers always set Origin on a
+        // cross-origin fetch, so any origin other than this dev server's own is refused.
+        const origin = req.headers.origin
+        if (origin && !/^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)) {
+          res.statusCode = 403
+          res.end('Forbidden origin')
+          return
+        }
+
         let body = ''
         req.on('data', (chunk) => {
           body += chunk
@@ -30,16 +42,35 @@ function mediaRepositionPlugin() {
         req.on('end', () => {
           try {
             const { alt, position } = JSON.parse(body)
+
+            if (typeof alt !== 'string' || !alt) {
+              res.statusCode = 400
+              res.end('Missing alt')
+              return
+            }
+            if (position !== null && !POSITION_PATTERN.test(position)) {
+              res.statusCode = 400
+              res.end('position must be "N% N%" or null')
+              return
+            }
+
             const source = readFileSync(cvDataPath, 'utf-8')
             const lines = source.split('\n')
+            const needle = `alt: "${alt}"`
 
-            const lineIndex = lines.findIndex((line) => line.includes(`alt: "${alt}"`))
-            if (lineIndex === -1) {
+            const matches = lines.reduce((n, line) => n + (line.includes(needle) ? 1 : 0), 0)
+            if (matches === 0) {
               res.statusCode = 404
               res.end(`No media entry found with alt "${alt}"`)
               return
             }
+            if (matches > 1) {
+              res.statusCode = 409
+              res.end(`alt "${alt}" is not unique in cv.ts — refusing to guess which entry to edit`)
+              return
+            }
 
+            const lineIndex = lines.findIndex((line) => line.includes(needle))
             let line = lines[lineIndex]
             line = line.replace(/,\s*position:\s*"[^"]*"/, '')
             if (position) {
