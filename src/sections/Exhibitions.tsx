@@ -15,7 +15,7 @@ export default function Exhibitions() {
       className="scroll-mt-24 border-t border-hairline/60 px-6 py-24 sm:px-10 sm:py-32"
     >
       <div className="mx-auto max-w-6xl">
-        <SectionHeader room="I" kicker="The Collection" title="Exhibitions" />
+        <SectionHeader room="I" kicker="The Collection" title="Work Experience" />
 
         <div className="flex flex-col gap-8">
           {experiences.map((exp, i) => (
