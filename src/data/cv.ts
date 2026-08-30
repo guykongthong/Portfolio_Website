@@ -34,6 +34,7 @@ export interface EducationEntry {
   school: string;
   date: string;
   detail?: string;
+  coursework?: string[]; // ordered with the most relevant/featured courses first
 }
 
 export interface ProjectMedia {
@@ -86,10 +87,9 @@ export const profile = {
     "full software development lifecycle, especially software architecture and design, " +
     "and backend systems. Comfortable across every stage, from requirement analysis and " +
     "system design through implementation, testing, and deployment, with the most " +
-    "hands-on time spent building and deploying backend systems and REST APIs. Three " +
-    "freelance and internship roles, three Teaching Assistant positions, two national " +
-    "ACM ICPC Thailand rounds, and a 1st-place win at the K-CAMT'26 Hackathon round out " +
-    "the experience.",
+    "hands-on time spent building and deploying backend systems and REST APIs. Two " +
+    "freelance roles, three Teaching Assistant positions, two national ACM ICPC Thailand " +
+    "rounds, and a 1st-place win at the K-CAMT'26 Hackathon, to round out the experience.",
 };
 
 export const contacts: ContactLink[] = [
@@ -115,16 +115,6 @@ export const experiences: Experience[] = [
     bullets: [
       "Mentor 90+ students across three courses: ADTs and Java design, advanced programming (JavaFX, multithreading, testing, build automation), and relational database systems.",
       "Deliver lab sessions on Java implementation, SQL queries, and ER modeling; grade assignments and exams with feedback on code quality and design correctness.",
-    ],
-  },
-  {
-    role: "Backend Developer Intern",
-    institution: "CompLaunch",
-    date: "Oct 2025 — Dec 2025",
-    medium: "Python · REST APIs · Unit Testing",
-    bullets: [
-      "Engineered a Python-based tournament management system with 20+ REST endpoints covering single elimination, double elimination, and round-robin bracket logic.",
-      "Authored unit tests for the bracket logic to catch edge cases before they hit production.",
     ],
   },
   {
@@ -156,6 +146,14 @@ export const education: EducationEntry[] = [
     school: "B.Sc. Software Engineering, Chiang Mai University",
     date: "2024 — Expected 2028",
     detail: "College of Arts, Media and Technology · 3rd Year",
+    coursework: [
+      "Software Design & Architecture",
+      "Software Requirement Analysis",
+      "Component-Based Software Development",
+      "Database Systems & Design",
+      "Algorithms Design & Analysis",
+      "DevOps",
+    ],
   },
   {
     school: "Lanna International School of Thailand",
@@ -214,19 +212,6 @@ export const projects: Project[] = [
       { type: "image", src: tuThreads, alt: "TU: The Public Platform — Threads page listing community-posted issues", fit: "contain" },
       { type: "image", src: tuRewards, alt: "TU: The Public Platform — Reward Marketplace page", fit: "contain" },
     ],
-  },
-  {
-    name: "CompLaunch Tournament Management System",
-    tag: "Internship",
-    institution: "CompLaunch",
-    date: "Oct 2025 — Dec 2025",
-    meta: "Backend Engineering Internship",
-    stack: ["Python", "REST APIs", "Unit Testing"],
-    bullets: [
-      "Engineered a Python-based tournament management system with 20+ REST endpoints covering single elimination, double elimination, and round-robin bracket logic.",
-      "Authored unit tests for the bracket logic to catch edge cases before they hit production.",
-    ],
-    media: [],
   },
   {
     name: "Core&Co Online Webstore",
