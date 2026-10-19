@@ -53,6 +53,7 @@ export interface Project {
   meta: string; // "4-Person Team · End-of-Semester Project"
   stack: string[];
   liveHref?: string;
+  liveLabel?: string; // link text, defaults to "View project"
   bullets: string[];
   media: ProjectMedia[]; // empty array renders a placeholder
   mediaOrientation?: "landscape" | "portrait"; // frame shape; default landscape (16:10)
@@ -83,13 +84,12 @@ export const profile = {
   years: "2024 — 2026",
   location: "Chiang Mai, Thailand",
   summary:
-    "Third-year Software Engineering student at Chiang Mai University, focused on the " +
-    "full software development lifecycle, especially software architecture and design, " +
-    "and backend systems. Comfortable across every stage, from requirement analysis and " +
-    "system design through implementation, testing, and deployment, with the most " +
-    "hands-on time spent building and deploying backend systems and REST APIs. Two " +
-    "freelance roles, three Teaching Assistant positions, two national ACM ICPC Thailand " +
-    "rounds, and a 1st-place win at the K-CAMT'26 Hackathon, to round out the experience.",
+    "Third-year Software Engineering student at Chiang Mai University, most interested in everything " +
+    "around the code: requirements, design, process, and what happens after it ships. Competitive " +
+    "programming (ACM ICPC National Round, 2025 and 2026) taught me to reach a working solution fast, " +
+    "and Software Metrics taught me to measure whether it is any good. I adapt to the people I work " +
+    "with, from leading a hackathon team through a language barrier to shipping backend work on " +
+    "deadline. Seeking an internship to grow toward design and architecture.",
 };
 
 export const contacts: ContactLink[] = [
@@ -171,6 +171,7 @@ export const projects: Project[] = [
     bullets: [
       "Led a 5-person team to 1st place, building a smart AC system that adjusts temperature and fan speed in real time based on room occupancy, including live webcam headcounting via Gemini vision.",
       "Designed and built the core calculation engine (occupancy density → AC mode → weather-adjusted BTU/hr → power draw), iterating it through three revisions to align with real HVAC/SEER physics.",
+      "Overcame a language barrier with Korean-speaking teammates who had limited English by listening closely to how they spoke and adjusting how I pronounced words, so they could understand me far more easily.",
       "Built the mock data generator and 168-hour simulation engine comparing the smart system against a static baseline, and led QA/testing that validated a ~30% reduction in energy use and CO₂ emissions.",
     ],
     media: [
@@ -214,6 +215,22 @@ export const projects: Project[] = [
     ],
   },
   {
+    name: "Core&Co Re-engineering: Metrics-Driven Stack Selection",
+    tag: "Coursework",
+    date: "2026",
+    meta: "2-Person Team · Backend & Database · Software Metrics Term Project",
+    liveHref: "/software-metrics-report.pdf",
+    liveLabel: "Read the report",
+    stack: ["Django REST Framework", "PostgreSQL", "React", "Tailwind CSS", "SonarQube Cloud", "GitHub Actions"],
+    bullets: [
+      "Re-engineered the Core&Co store onto React, Tailwind CSS, Django REST Framework, and PostgreSQL, choosing each with a weighted-criteria measurement process (COCOMO experience multipliers, test tooling, community size, structure, functional fit) tied to goals checkable after the rebuild.",
+      "Baselined the original with function point analysis (213 UFP) and SonarQube, then re-measured the rebuild with the same tools: coverage 0% to 98.7%, bugs 8 to 0, code smells 9.18 to 0.43 per KLOC, backend peak cyclomatic complexity 66 to 19.",
+      "Scoring ranked Spring Boot (78) above Django (75) and FastAPI (47); chose Django anyway for its built-in features under the deadline, then compared those predictions with how the build went.",
+      "Set up SonarQube Cloud in GitHub Actions with coverage import and a PR quality gate, and directed and reviewed an AI-assisted DRF backend with 578 tests on PostgreSQL.",
+    ],
+    media: [],
+  },
+  {
     name: "Core&Co Online Webstore",
     tag: "Coursework",
     date: "2025",
@@ -230,6 +247,37 @@ export const projects: Project[] = [
       { type: "video", src: corecoClientCheckout, alt: "Core&Co — customer checkout flow" },
       { type: "video", src: corecoAdminDashboard, alt: "Core&Co — role-restricted admin dashboard" },
     ],
+  },
+  {
+    name: "Core&Co Online Webstore",
+    tag: "Coursework",
+    date: "2025",
+    meta: "4-Person Team · End-of-Semester Project",
+    stack: ["Node.js", "Express", "EJS", "MySQL", "Docker Compose", "GitHub Actions", "AWS EC2"],
+    bullets: [
+      "Owned backend and infrastructure solo on a 4-person team while teammates handled UI/UX and frontend.",
+      "Built a REST API with token-based auth (email verification, password reset), product catalog, cart/checkout, and order management, deployed to production on AWS.",
+      "Indexed frequently-queried fields to reduce query time and integrated Supabase Storage with URL references in MySQL to keep product images out of the database.",
+      "Containerized with Docker Compose and set up a GitHub Actions pipeline to auto-deploy to AWS EC2 on every push to main.",
+    ],
+    media: [
+      { type: "video", src: corecoClientShop, alt: "Core&Co — customer-facing product browsing and search" },
+      { type: "video", src: corecoClientCheckout, alt: "Core&Co — customer checkout flow" },
+      { type: "video", src: corecoAdminDashboard, alt: "Core&Co — role-restricted admin dashboard" },
+    ],
+  },
+  {
+    name: "CAMT Passport: Level-Based Learning & Exam Platform",
+    tag: "Coursework",
+    date: "2026",
+    meta: "3-Person Team · Backend, Database & Deployment · In Progress",
+    stack: ["Vue", "Tailwind CSS", "Spring Boot", "PostgreSQL", "Adminer", "Supabase Storage (S3)", "Railway", "Vercel"],
+    bullets: [
+      "Building the Spring Boot backend and PostgreSQL database for a platform where users study eLearning and pass exams to upgrade through four access levels, with admin control of users, levels, and pass criteria.",
+      "Implementing JWT authentication with role-based access (admin and user) through Spring Security, plus server-side pagination and combined filters by level, province, and name using JPA Pageable.",
+      "Handling profile image uploads to Supabase Storage (S3) and deploying the backend and database on Railway, with the frontend on Vercel.",
+    ],
+    media: [],
   },
   {
     name: "This Portfolio Website",
@@ -255,11 +303,15 @@ export const skills: SkillRow[] = [
       "Node.js",
       "Express",
       "Hono",
+      "Django",
+      "Django REST Framework",
       "Spring Boot",
+      "FastAPI",
       "React",
       "Vue.js",
       "REST APIs",
       "OpenAPI",
+      "Tailwind CSS",
       "Bootstrap",
       "EJS",
     ],
@@ -278,7 +330,7 @@ export const skills: SkillRow[] = [
       "Linux",
     ],
   },
-  { label: "Tools", items: ["Git", "GitHub", "GitLab", "Postman", "Figma", "Jira"] },
+  { label: "Tools", items: ["Git", "GitHub", "GitLab", "SonarQube", "Postman", "Figma", "Jira"] },
 ];
 
 export const extracurriculars: Extracurricular[] = [
@@ -304,7 +356,7 @@ export const accolades: Accolade[] = [
     kind: "award",
   },
   {
-    name: "ACM ICPC Thailand National Round — competed as part of a 3-person team against universities across Thailand at Kasetsart University",
+    name: "ACM ICPC Thailand National Round — placed 36th of about 100 teams as part of a 3-person team at Kasetsart University, the first CAMT team to score points",
     year: "2026",
     kind: "award",
   },
