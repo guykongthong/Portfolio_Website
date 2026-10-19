@@ -46,7 +46,7 @@ function ProjectDetails({ p }: { p: Project }) {
           rel="noreferrer"
           className="mt-6 w-fit border-b border-accent/60 font-mono text-[11px] uppercase tracking-[0.2em] text-accent transition-colors duration-300 hover:border-bone hover:text-bone"
         >
-          View project ↗
+          {p.liveLabel ?? "View project"} ↗
         </a>
       )}
     </div>
