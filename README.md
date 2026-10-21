@@ -18,7 +18,7 @@ My personal portfolio, designed as a minimalist gallery exhibition. Each CV sect
 - Tailwind CSS v4 (design tokens in the `@theme` block of `src/index.css`)
 - framer-motion for animation, lucide-react and react-icons for icons
 - Fraunces and IBM Plex Mono, loaded from Google Fonts
-- Deployed on Vercel
+- Deployed on Vercel from `main`
 
 ## Project structure
 
@@ -33,21 +33,3 @@ src/
   assets/             portrait and project media
 public/               static files, including the Software Metrics report PDF
 ```
-
-## Running locally
-
-```bash
-npm install
-npm run dev        # Vite dev server
-npm run build      # production build to dist/
-npm run preview    # serve the production build locally
-npm run lint
-```
-
-## Deployment
-
-The site is a static Vite build deployed on Vercel. `vercel.json` sets the framework, build command, and output directory, so importing the repo into Vercel needs no extra configuration. Every merge to `main` deploys to production.
-
-## Branch workflow
-
-`main` is production. Work happens on `feature/*` branches and lands through pull requests.
