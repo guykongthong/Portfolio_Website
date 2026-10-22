@@ -263,6 +263,8 @@ export const projects: Project[] = [
     tag: "Coursework",
     date: "2026",
     meta: "3-Person Team · Backend, Database & Deployment · In Progress",
+    liveHref: "https://youtu.be/f58dJyE3wNI",
+    liveLabel: "Watch the Phase 1 demo (frontend)",
     stack: ["Vue", "Tailwind CSS", "Spring Boot", "PostgreSQL", "Adminer", "Supabase Storage (S3)", "Railway", "Vercel"],
     bullets: [
       "Building the Spring Boot backend and PostgreSQL database for a platform where users study eLearning and pass exams to upgrade through four access levels, with admin control of users, levels, and pass criteria.",
