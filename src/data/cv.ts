@@ -171,7 +171,7 @@ export const projects: Project[] = [
     bullets: [
       "Led a 5-person team to 1st place, building a smart AC system that adjusts temperature and fan speed in real time based on room occupancy, including live webcam headcounting via Gemini vision. Now competing at the New Gen Energy Research Showcase, scaling it up with multi-room support and hardware integration.",
       "Designed and built the core calculation engine (occupancy density → AC mode → weather-adjusted BTU/hr → power draw), iterating it through three revisions to align with real HVAC/SEER physics.",
-      "Overcame a language barrier with Korean-speaking teammates who had limited English by listening closely to how they spoke and adjusting how I pronounced words, so they could understand me far more easily.",
+      "Overcame a language barrier with teammates, most of them Korean speakers with limited English, by listening closely to how they spoke and adjusting how I pronounced words, so they could understand me far more easily.",
       "Built the mock data generator and 168-hour simulation engine comparing the smart system against a static baseline, and led QA/testing that validated a ~30% reduction in energy use and CO₂ emissions.",
     ],
     media: [
