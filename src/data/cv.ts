@@ -12,6 +12,10 @@ import coolsenseDemo from "../assets/projects/coolsense/demo.mp4";
 import corecoClientShop from "../assets/projects/coreco/client-shop.mp4";
 import corecoClientCheckout from "../assets/projects/coreco/client-checkout.mp4";
 import corecoAdminDashboard from "../assets/projects/coreco/admin-dashboard.mp4";
+import reportCover from "../assets/projects/coreco-report/page-01.jpg";
+import reportStack from "../assets/projects/coreco-report/page-43.jpg";
+import reportQuality from "../assets/projects/coreco-report/page-45.jpg";
+import reportBeforeAfter from "../assets/projects/coreco-report/page-47.jpg";
 import ccmxLanding from "../assets/projects/ccmx/landing.png";
 import portfolioHero from "../assets/projects/portfolio/hero.png";
 
@@ -228,7 +232,13 @@ export const projects: Project[] = [
       "Scoring ranked Spring Boot (78) above Django (75) and FastAPI (47); chose Django anyway for its built-in features under the deadline, then compared those predictions with how the build went.",
       "Set up SonarQube Cloud in GitHub Actions with coverage import and a PR quality gate, and directed and reviewed an AI-assisted DRF backend with 578 tests on PostgreSQL.",
     ],
-    media: [],
+    media: [
+      { type: "image", src: reportCover, alt: "Software Metrics report: cover page", fit: "contain" },
+      { type: "image", src: reportStack, alt: "Software Metrics report: original and chosen tech stack", fit: "contain" },
+      { type: "image", src: reportQuality, alt: "Software Metrics report: SonarQube setup, coverage, and quality gate", fit: "contain" },
+      { type: "image", src: reportBeforeAfter, alt: "Software Metrics report: before and after measurements", fit: "contain" },
+    ],
+    mediaOrientation: "portrait",
   },
   {
     name: "Core&Co Online Webstore",
