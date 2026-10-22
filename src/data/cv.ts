@@ -42,7 +42,7 @@ export interface EducationEntry {
 }
 
 export interface ProjectMedia {
-  type: "image" | "video";
+  type: "image" | "video" | "embed"; // "embed" is an iframe URL, e.g. a YouTube embed
   src: string;
   alt: string;
   fit?: "cover" | "contain"; // "contain" letterboxes portrait-oriented media instead of cropping it
@@ -263,15 +263,15 @@ export const projects: Project[] = [
     tag: "Coursework",
     date: "2026",
     meta: "3-Person Team · Backend, Database & Deployment · In Progress",
-    liveHref: "https://youtu.be/f58dJyE3wNI",
-    liveLabel: "Watch the Phase 1 demo (frontend)",
     stack: ["Vue", "Tailwind CSS", "Spring Boot", "PostgreSQL", "Adminer", "Supabase Storage (S3)", "Railway", "Vercel"],
     bullets: [
       "Building the Spring Boot backend and PostgreSQL database for a platform where users study eLearning and pass exams to upgrade through four access levels, with admin control of users, levels, and pass criteria.",
       "Implementing JWT authentication with role-based access (admin and user) through Spring Security, plus server-side pagination and combined filters by level, province, and name using JPA Pageable.",
       "Handling profile image uploads to Supabase Storage (S3) and deploying the backend and database on Railway, with the frontend on Vercel.",
     ],
-    media: [],
+    media: [
+      { type: "embed", src: "https://www.youtube-nocookie.com/embed/f58dJyE3wNI", alt: "CAMT Passport: Phase 1 demo (frontend only)" },
+    ],
   },
   {
     name: "This Portfolio Website",
