@@ -103,7 +103,16 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
           bordered ? "border border-hairline" : ""
         } ${fit === "contain" ? "bg-wall-2" : ""} ${editing ? "cursor-crosshair" : ""}`}
       >
-        {item.type === "video" ? (
+        {item.type === "embed" ? (
+          <iframe
+            className="h-full w-full"
+            src={item.src}
+            title={item.alt}
+            loading="lazy"
+            allow="encrypted-media; picture-in-picture; fullscreen"
+            allowFullScreen
+          />
+        ) : item.type === "video" ? (
           <video
             className={`h-full w-full ${fit === "contain" ? "object-contain" : "object-cover"}`}
             style={{ objectPosition }}
@@ -123,7 +132,7 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
         )}
       </div>
 
-      {import.meta.env.DEV && !editing && (
+      {import.meta.env.DEV && !editing && item.type !== "embed" && (
         <button
           type="button"
           aria-label={`Reposition ${item.alt}`}

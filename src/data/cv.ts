@@ -12,6 +12,10 @@ import coolsenseDemo from "../assets/projects/coolsense/demo.mp4";
 import corecoClientShop from "../assets/projects/coreco/client-shop.mp4";
 import corecoClientCheckout from "../assets/projects/coreco/client-checkout.mp4";
 import corecoAdminDashboard from "../assets/projects/coreco/admin-dashboard.mp4";
+import reportCover from "../assets/projects/coreco-report/page-01.jpg";
+import reportStack from "../assets/projects/coreco-report/page-43.jpg";
+import reportQuality from "../assets/projects/coreco-report/page-45.jpg";
+import reportBeforeAfter from "../assets/projects/coreco-report/page-47.jpg";
 import ccmxLanding from "../assets/projects/ccmx/landing.png";
 import portfolioHero from "../assets/projects/portfolio/hero.png";
 
@@ -38,7 +42,7 @@ export interface EducationEntry {
 }
 
 export interface ProjectMedia {
-  type: "image" | "video";
+  type: "image" | "video" | "embed"; // "embed" is an iframe URL, e.g. a YouTube embed
   src: string;
   alt: string;
   fit?: "cover" | "contain"; // "contain" letterboxes portrait-oriented media instead of cropping it
@@ -228,25 +232,13 @@ export const projects: Project[] = [
       "Scoring ranked Spring Boot (78) above Django (75) and FastAPI (47); chose Django anyway for its built-in features under the deadline, then compared those predictions with how the build went.",
       "Set up SonarQube Cloud in GitHub Actions with coverage import and a PR quality gate, and directed and reviewed an AI-assisted DRF backend with 578 tests on PostgreSQL.",
     ],
-    media: [],
-  },
-  {
-    name: "Core&Co Online Webstore",
-    tag: "Coursework",
-    date: "2025",
-    meta: "4-Person Team · End-of-Semester Project",
-    stack: ["Node.js", "Express", "EJS", "MySQL", "Docker Compose", "GitHub Actions", "AWS EC2"],
-    bullets: [
-      "Owned backend and infrastructure solo on a 4-person team while teammates handled UI/UX and frontend.",
-      "Built a REST API with token-based auth (email verification, password reset), product catalog, cart/checkout, and order management, deployed to production on AWS.",
-      "Indexed frequently-queried fields to reduce query time and integrated Supabase Storage with URL references in MySQL to keep product images out of the database.",
-      "Containerized with Docker Compose and set up a GitHub Actions pipeline to auto-deploy to AWS EC2 on every push to main.",
-    ],
     media: [
-      { type: "video", src: corecoClientShop, alt: "Core&Co — customer-facing product browsing and search" },
-      { type: "video", src: corecoClientCheckout, alt: "Core&Co — customer checkout flow" },
-      { type: "video", src: corecoAdminDashboard, alt: "Core&Co — role-restricted admin dashboard" },
+      { type: "image", src: reportCover, alt: "Software Metrics report: cover page", fit: "contain" },
+      { type: "image", src: reportStack, alt: "Software Metrics report: original and chosen tech stack", fit: "contain" },
+      { type: "image", src: reportQuality, alt: "Software Metrics report: SonarQube setup, coverage, and quality gate", fit: "contain" },
+      { type: "image", src: reportBeforeAfter, alt: "Software Metrics report: before and after measurements", fit: "contain" },
     ],
+    mediaOrientation: "portrait",
   },
   {
     name: "Core&Co Online Webstore",
@@ -277,7 +269,9 @@ export const projects: Project[] = [
       "Implementing JWT authentication with role-based access (admin and user) through Spring Security, plus server-side pagination and combined filters by level, province, and name using JPA Pageable.",
       "Handling profile image uploads to Supabase Storage (S3) and deploying the backend and database on Railway, with the frontend on Vercel.",
     ],
-    media: [],
+    media: [
+      { type: "embed", src: "https://www.youtube-nocookie.com/embed/f58dJyE3wNI", alt: "CAMT Passport: Phase 1 demo (frontend only)" },
+    ],
   },
   {
     name: "This Portfolio Website",
