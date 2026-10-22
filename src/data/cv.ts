@@ -249,24 +249,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    name: "Core&Co Online Webstore",
-    tag: "Coursework",
-    date: "2025",
-    meta: "4-Person Team · End-of-Semester Project",
-    stack: ["Node.js", "Express", "EJS", "MySQL", "Docker Compose", "GitHub Actions", "AWS EC2"],
-    bullets: [
-      "Owned backend and infrastructure solo on a 4-person team while teammates handled UI/UX and frontend.",
-      "Built a REST API with token-based auth (email verification, password reset), product catalog, cart/checkout, and order management, deployed to production on AWS.",
-      "Indexed frequently-queried fields to reduce query time and integrated Supabase Storage with URL references in MySQL to keep product images out of the database.",
-      "Containerized with Docker Compose and set up a GitHub Actions pipeline to auto-deploy to AWS EC2 on every push to main.",
-    ],
-    media: [
-      { type: "video", src: corecoClientShop, alt: "Core&Co — customer-facing product browsing and search" },
-      { type: "video", src: corecoClientCheckout, alt: "Core&Co — customer checkout flow" },
-      { type: "video", src: corecoAdminDashboard, alt: "Core&Co — role-restricted admin dashboard" },
-    ],
-  },
-  {
     name: "CAMT Passport: Level-Based Learning & Exam Platform",
     tag: "Coursework",
     date: "2026",
