@@ -109,6 +109,7 @@ export default function Carousel<T>({
   }, [current]);
 
   const onKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
     if (e.key === "ArrowRight") go(current + 1, 1);
     else if (e.key === "ArrowLeft") go(current - 1, -1);
     else if (e.key === "Home") go(0, -1);
