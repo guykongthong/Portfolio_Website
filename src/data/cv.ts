@@ -9,6 +9,10 @@ import tuRewards from "../assets/projects/tu-frontend/rewards.png";
 import coolsenseAward from "../assets/projects/coolsense/award-photo.jpg";
 import coolsenseTeam from "../assets/projects/coolsense/team-photo.jpg";
 import coolsenseDemo from "../assets/projects/coolsense/demo.mp4";
+import coolsenseAppDemo from "../assets/projects/coolsense/app-demo.mp4";
+import coolsenseOverview from "../assets/projects/coolsense/ui-overview.jpg";
+import coolsensePeople from "../assets/projects/coolsense/ui-analytics-people.jpg";
+import coolsenseCarbon from "../assets/projects/coolsense/ui-analytics-carbon.jpg";
 import corecoClientShop from "../assets/projects/coreco/client-shop.mp4";
 import corecoClientCheckout from "../assets/projects/coreco/client-checkout.mp4";
 import corecoAdminDashboard from "../assets/projects/coreco/admin-dashboard.mp4";
@@ -18,6 +22,18 @@ import reportQuality from "../assets/projects/coreco-report/page-45.jpg";
 import reportBeforeAfter from "../assets/projects/coreco-report/page-47.jpg";
 import ccmxLanding from "../assets/projects/ccmx/landing.png";
 import portfolioHero from "../assets/projects/portfolio/hero.png";
+import airGuitarTop from "../assets/projects/air-guitar/guitar-top.jpg";
+import airGuitarAngle from "../assets/projects/air-guitar/guitar-angle.jpg";
+import airGuitarBreadboard from "../assets/projects/air-guitar/breadboard.jpg";
+import airGuitarBlock from "../assets/projects/air-guitar/block-diagram.png";
+import airGuitarFlow from "../assets/projects/air-guitar/strum-flowchart.png";
+import airGuitarMatrix from "../assets/projects/air-guitar/chord-confusion-matrix.png";
+import airGuitarHistory from "../assets/projects/air-guitar/history.png";
+import airGuitarTutor from "../assets/projects/air-guitar/tutor.png";
+import airGuitarTrain from "../assets/projects/air-guitar/train.png";
+import airGuitarTest from "../assets/projects/air-guitar/test.png";
+import lineBotFlow from "../assets/projects/line-bot/flow.png";
+import showproDemo from "../assets/projects/showpro/demo.mp4";
 
 export interface ContactLink {
   label: string;
@@ -38,7 +54,8 @@ export interface EducationEntry {
   school: string;
   date: string;
   detail?: string;
-  coursework?: string[]; // ordered with the most relevant/featured courses first
+  coursework?: string[];
+  featuredCoursework?: string[]; // subset of coursework shown with the highlighted border
 }
 
 export interface ProjectMedia {
@@ -71,7 +88,7 @@ export interface SkillRow {
 export interface Accolade {
   name: string;
   year: string;
-  kind: "certification" | "award";
+  kind: "certification" | "award" | "competition";
 }
 
 export interface Extracurricular {
@@ -114,7 +131,7 @@ export const experiences: Experience[] = [
     institution: "Chiang Mai University",
     date: "Nov 2025 — Present",
     context:
-      "SE102: Abstract Data Types & Problem Solving · SE233: Advanced Programming · 953212: Database Systems & Design",
+      "953102: Abstract Data Types & Problem Solving · 953233: Advanced Programming · 953212: Database Systems & Design",
     medium: "Java · JavaFX · SQL · ER Modeling",
     bullets: [
       "Mentor 90+ students across three courses: ADTs and Java design, advanced programming (JavaFX, multithreading, testing, build automation), and relational database systems.",
@@ -124,7 +141,7 @@ export const experiences: Experience[] = [
   {
     role: "Frontend Developer",
     institution: "TU: The Public Platform",
-    date: "Freelance · May 2026 — Present",
+    date: "Freelance · May 2026 to Oct 2026",
     medium: "React 18 · TypeScript · TanStack · Tailwind v4",
     bullets: [
       "Led frontend delivery on a 3-person team to ship a public-interest content platform used by four distinct user roles (member, reviewer, sponsor, admin).",
@@ -157,7 +174,12 @@ export const education: EducationEntry[] = [
       "Database Systems & Design",
       "Algorithms Design & Analysis",
       "DevOps",
+      "Software Metrics",
+      "Mobile Application Development",
+      "Natural Language Processing for Software Engineering",
+      "Information Retrieval",
     ],
+    featuredCoursework: ["Software Design & Architecture", "Software Metrics", "DevOps", "Algorithms Design & Analysis"],
   },
   {
     school: "Lanna International School of Thailand",
@@ -179,11 +201,14 @@ export const projects: Project[] = [
       "Built the mock data generator and 168-hour simulation engine comparing the smart system against a static baseline, and led QA/testing that validated a ~30% reduction in energy use and CO₂ emissions.",
     ],
     media: [
-      { type: "video", src: coolsenseDemo, alt: "CoolSense — live demo at K-CAMT'26 Hackathon" },
-      { type: "image", src: coolsenseTeam, alt: "CoolSense team accepting the K-CAMT'26 Hackathon win on stage" },
-      { type: "image", src: coolsenseAward, alt: "Net-Zero Grand Champion Award, K-CAMT'26 Hackathon" },
+      { type: "video", src: coolsenseAppDemo, alt: "CoolSense: screen recording of the dashboard demo", fit: "contain" },
+      { type: "image", src: coolsenseOverview, alt: "CoolSense proposal design: overview with all floors collapsed", fit: "contain" },
+      { type: "image", src: coolsensePeople, alt: "CoolSense proposal design: analytics, people today", fit: "contain" },
+      { type: "image", src: coolsenseCarbon, alt: "CoolSense proposal design: analytics, carbon emissions", fit: "contain" },
+      { type: "video", src: coolsenseDemo, alt: "CoolSense: live demo at K-CAMT'26 Hackathon", fit: "contain" },
+      { type: "image", src: coolsenseTeam, alt: "CoolSense team accepting the K-CAMT'26 Hackathon win on stage", fit: "contain" },
+      { type: "image", src: coolsenseAward, alt: "Net-Zero Grand Champion Award, K-CAMT'26 Hackathon", fit: "contain" },
     ],
-    mediaOrientation: "portrait",
   },
   {
     name: "CCMX 2027 Conference Platform",
@@ -204,7 +229,7 @@ export const projects: Project[] = [
     name: "TU: The Public Platform",
     tag: "Freelance",
     institution: "TU: The Public Platform",
-    date: "May 2026 — Present",
+    date: "May 2026 to Oct 2026",
     meta: "Freelance · Public-Interest Content Platform",
     stack: ["React 18", "TypeScript", "TanStack Router", "Tailwind CSS v4", "React Hook Form", "Zod", "Axios"],
     bullets: [
@@ -213,7 +238,7 @@ export const projects: Project[] = [
       "Designed Figma wireframes and prototypes for the end-to-end user flows, then implemented a bilingual (i18n) UI in React 18, TypeScript, TanStack Router, and Tailwind CSS v4, with form validation (React Hook Form + Zod), file uploads, and authenticated API calls via Axios interceptors, in weekly Agile sprints.",
     ],
     media: [
-      { type: "image", src: tuExplore, alt: "TU: The Public Platform — Explore page with domain browsing", fit: "contain" },
+      { type: "image", src: tuExplore, alt: "TU: The Public Platform, Explore page with domain browsing", fit: "cover", position: "50% 0%" },
       { type: "image", src: tuThreads, alt: "TU: The Public Platform — Threads page listing community-posted issues", fit: "contain" },
       { type: "image", src: tuRewards, alt: "TU: The Public Platform — Reward Marketplace page", fit: "contain" },
     ],
@@ -259,18 +284,18 @@ export const projects: Project[] = [
     ],
   },
   {
-    name: "CAMT Passport: Level-Based Learning & Exam Platform",
+    name: "CAMT AI Passport: Level-Based Learning & Exam Platform",
     tag: "Coursework",
-    date: "2026",
-    meta: "3-Person Team · Backend, Database & Deployment · In Progress",
-    stack: ["Vue", "Tailwind CSS", "Spring Boot", "PostgreSQL", "Adminer", "Supabase Storage (S3)", "Railway", "Vercel"],
+    date: "Oct 2026 to Nov 2026",
+    meta: "3-Person Team · Backend, Database & Deployment · Course 953331",
+    stack: ["Vue 3", "TypeScript", "Tailwind CSS", "Spring Boot", "PostgreSQL", "Supabase Storage (S3)", "Docker", "GitHub Actions"],
     bullets: [
-      "Building the Spring Boot backend and PostgreSQL database for a platform where users study eLearning and pass exams to upgrade through four access levels, with admin control of users, levels, and pass criteria.",
-      "Implementing JWT authentication with role-based access (admin and user) through Spring Security, plus server-side pagination and combined filters by level, province, and name using JPA Pageable.",
-      "Handling profile image uploads to Supabase Storage (S3) and deploying the backend and database on Railway, with the frontend on Vercel.",
+      "Built the Spring Boot backend and PostgreSQL database for a platform where users study eLearning videos and pass exams to upgrade through four access levels, with admin control of users, levels, and exam questions: 19 REST endpoints and 8 JPA entities.",
+      "Implemented JWT authentication with role-based access (admin and user) through Spring Security, plus server-side pagination and combined filters by level, province, and name using JPA Pageable.",
+      "Handled profile image uploads to Supabase Storage (S3) and deployed with multi-stage Docker images and Docker Compose on a VM, auto-deployed by GitHub Actions on push to the prod branch.",
     ],
     media: [
-      { type: "embed", src: "https://www.youtube-nocookie.com/embed/f58dJyE3wNI", alt: "CAMT Passport: Phase 1 demo (frontend only)" },
+      { type: "embed", src: "https://www.youtube-nocookie.com/embed/f58dJyE3wNI", alt: "CAMT AI Passport: Phase 1 demo (frontend only)" },
     ],
   },
   {
@@ -285,6 +310,70 @@ export const projects: Project[] = [
       "Built with React 19, TypeScript, and Tailwind CSS v4, with framer-motion handling scroll reveals and transitions.",
     ],
     media: [{ type: "image", src: portfolioHero, alt: "This portfolio's own gallery-exhibit hero" }],
+  },
+];
+
+// Smaller projects, shown as a compact expandable list under the featured carousel.
+export const otherProjects: Project[] = [
+  {
+    name: "LINE Arrival Notification Bot",
+    tag: "Personal",
+    date: "2026",
+    meta: "Personal · iOS Shortcut Triggered LINE Push Notifications",
+    stack: ["Supabase Edge Functions", "Deno", "Postgres", "LINE Messaging API"],
+    liveHref: "https://github.com/guykongthong/location-bot",
+    liveLabel: "View repo",
+    bullets: [
+      "Built a LINE bot that messages friends and family groups when I get home or reach uni. An iOS Shortcut calls the bot the moment my phone joins a Wi-Fi network.",
+      "Wrote five Supabase Edge Functions in Deno (webhook, arrived-home, arrived-uni, recipients, health) over a Postgres schema, with shared-secret auth, HMAC-SHA256 verification of LINE webhook signatures, and a 30-minute cooldown per trigger.",
+      "Started on Express, SQLite, and Railway, then migrated the whole bot to Supabase Edge Functions and Postgres.",
+      "Recipients are added and deactivated automatically from LINE follow, unfollow, join, and leave events. Each push is logged, and the bot warns at 400 of the 500 free-tier messages per month.",
+    ],
+    media: [
+      { type: "image", src: lineBotFlow, alt: "LINE Arrival Notification Bot: flowchart of the arrival trigger and the recipient webhook", fit: "contain" },
+    ],
+  },
+  {
+    name: "Air Guitar",
+    tag: "Coursework",
+    institution: "Chiang Mai University",
+    date: "Nov 2026",
+    meta: "Solo Project · IoT & Embedded Programming (953362)",
+    stack: ["ESP8266", "Arduino C++", "US-100 Ultrasonic Sensor", "MQTT", "Vue 3", "Vite", "MediaPipe Hand Landmarker", "Web Audio"],
+    bullets: [
+      "Built an air guitar so people can try playing without owning one: the left hand shows a chord shape to a webcam, the right hand strums over an ultrasonic sensor, and a Vue 3 dashboard plays the sound, shows the next chord of a song to play along to, and scores chord and timing.",
+      "Wrote the ESP8266 firmware (Arduino C++) that reads the US-100 sensor every 25 ms, filters it with a median of 3 plus smoothing, computes hand speed, and publishes down and up strum events with speed over MQTT, with a last-will status topic.",
+      "Built chord recognition from MediaPipe hand landmarks: 210 pairwise distances normalised by hand size, fed to a k-nearest-neighbours classifier (k = 5) written in plain JavaScript with a majority vote over 7 frames, covering 6 chords plus idle. It scored 98.6% (138 of 140 test frames) on a separate test take, same person and lighting, with 373 training samples.",
+      "Built the dashboard with a song mode (play-along and wait), in-browser training and test tabs, session history, and a live status bar for board, sensor, and MQTT. Measured a 46 ms median strum-to-sound delay against a 200 ms target.",
+      "Wrote the project report with SRS, SDD, diagrams, and test results. Strum direction detection with a single sensor was a known limitation.",
+    ],
+    media: [
+      { type: "image", src: airGuitarTop, alt: "Air Guitar: cardboard guitar body with the ultrasonic sensor facing out of the sound hole", fit: "contain" },
+      { type: "image", src: airGuitarAngle, alt: "Air Guitar: guitar body from a second angle", fit: "contain" },
+      { type: "image", src: airGuitarBreadboard, alt: "Air Guitar: US-100 sensor and NodeMCU ESP8266 wired on a breadboard inside the guitar body", fit: "contain" },
+      { type: "image", src: airGuitarTutor, alt: "Air Guitar: main dashboard view with the detected chord, last strum, and live status bar", fit: "contain" },
+      { type: "image", src: airGuitarTrain, alt: "Air Guitar: Train tab with 373 recorded training samples", fit: "contain" },
+      { type: "image", src: airGuitarTest, alt: "Air Guitar: Test tab with 20 trials per chord", fit: "contain" },
+      { type: "image", src: airGuitarHistory, alt: "Air Guitar: History tab with two logged play-along sessions", fit: "contain" },
+      { type: "image", src: airGuitarBlock, alt: "Air Guitar: system block diagram from the sensor board through MQTT to the Vue dashboard", fit: "contain" },
+      { type: "image", src: airGuitarFlow, alt: "Air Guitar: strum detection flowchart of the firmware loop", fit: "contain" },
+      { type: "image", src: airGuitarMatrix, alt: "Air Guitar: chord classifier confusion matrix, 138 of 140 test frames correct", fit: "contain" },
+    ],
+  },
+  {
+    name: "CAMT ShowPro: Capstone Showcase Website",
+    tag: "Personal",
+    date: "Sep 2026",
+    meta: "Personal · 18th CAMT ShowPro Capstone Exhibition",
+    stack: ["Vue 3", "Vite", "Supabase Storage", "Vercel"],
+    liveHref: "https://camt-18th-showpro.vercel.app",
+    liveLabel: "Visit the site",
+    bullets: [
+      "Built the showcase website for the 18th CAMT ShowPro capstone exhibition, styled as a retro arcade.",
+    ],
+    media: [
+      { type: "video", src: showproDemo, alt: "CAMT ShowPro: demo of the capstone showcase website", fit: "contain" },
+    ],
   },
 ];
 
@@ -347,16 +436,16 @@ export const accolades: Accolade[] = [
   {
     name: "ACM ICPC Northern Thailand Regional Round — competed as part of a 3-person team and advanced to the National Round",
     year: "2026",
-    kind: "award",
+    kind: "competition",
   },
   {
     name: "ACM ICPC Thailand National Round — placed 36th of about 100 teams as part of a 3-person team at Kasetsart University, the first CAMT team to score points",
     year: "2026",
-    kind: "award",
+    kind: "competition",
   },
   {
     name: "ACM ICPC Thailand National Round — competed as part of a 3-person team against universities across Thailand at King Mongkut's University of Technology Ladkrabang",
     year: "2025",
-    kind: "award",
+    kind: "competition",
   },
 ];

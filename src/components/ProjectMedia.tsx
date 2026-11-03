@@ -97,6 +97,7 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
   return (
     <div className="group relative">
       <div
+        data-no-swipe={editing || media.length > 1 || undefined}
         onPointerDown={editing ? drag : undefined}
         onPointerMove={editing ? drag : undefined}
         className={`flex ${aspectClass} w-full items-center justify-center overflow-hidden ${
@@ -137,7 +138,7 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
           type="button"
           aria-label={`Reposition ${item.alt}`}
           onClick={startEditing}
-          className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center border border-hairline bg-wall/80 font-mono text-sm text-bone opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:border-accent/60 hover:text-accent group-hover:opacity-100"
+          className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center border border-hairline bg-wall/80 font-mono text-sm text-bone opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:border-accent/60 hover:text-accent focus-visible:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
         >
           ✥
         </button>
@@ -185,7 +186,7 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
             type="button"
             aria-label={`Previous image for ${name}`}
             onClick={() => goTo(index - 1)}
-            className="absolute left-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center border border-hairline bg-wall/80 font-mono text-sm text-bone opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:border-accent/60 hover:text-accent group-hover:opacity-100"
+            className="absolute left-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center border border-hairline bg-wall/80 font-mono text-sm text-bone opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:border-accent/60 hover:text-accent focus-visible:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
           >
             ‹
           </button>
@@ -193,7 +194,7 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
             type="button"
             aria-label={`Next image for ${name}`}
             onClick={() => goTo(index + 1)}
-            className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center border border-hairline bg-wall/80 font-mono text-sm text-bone opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:border-accent/60 hover:text-accent group-hover:opacity-100"
+            className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center border border-hairline bg-wall/80 font-mono text-sm text-bone opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:border-accent/60 hover:text-accent focus-visible:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
           >
             ›
           </button>
