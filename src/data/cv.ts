@@ -238,7 +238,7 @@ export const projects: Project[] = [
       "Designed Figma wireframes and prototypes for the end-to-end user flows, then implemented a bilingual (i18n) UI in React 18, TypeScript, TanStack Router, and Tailwind CSS v4, with form validation (React Hook Form + Zod), file uploads, and authenticated API calls via Axios interceptors, in weekly Agile sprints.",
     ],
     media: [
-      { type: "image", src: tuExplore, alt: "TU: The Public Platform — Explore page with domain browsing", fit: "cover", position: "50% 0%" },
+      { type: "image", src: tuExplore, alt: "TU: The Public Platform, Explore page with domain browsing", fit: "cover", position: "50% 0%" },
       { type: "image", src: tuThreads, alt: "TU: The Public Platform — Threads page listing community-posted issues", fit: "contain" },
       { type: "image", src: tuRewards, alt: "TU: The Public Platform — Reward Marketplace page", fit: "contain" },
     ],

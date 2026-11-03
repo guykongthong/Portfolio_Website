@@ -5,7 +5,7 @@ import Frame from "../components/Frame";
 import Reveal from "../components/Reveal";
 
 /**
- * Certifications, awards, and competitions as recognition plaques — the gallery's accolade wall.
+ * Certifications, awards, and competitions as recognition plaques, the gallery's accolade wall.
  */
 export default function Recognition() {
   return (
