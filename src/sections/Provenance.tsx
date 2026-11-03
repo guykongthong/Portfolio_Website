@@ -18,7 +18,7 @@ export default function Provenance() {
         <div className="relative ml-2 border-l border-hairline pl-8 sm:pl-12">
           {education.map((e, i) => (
             <Reveal key={e.school} delay={i * 0.06}>
-              <div className="relative pb-12 last:pb-0">
+              <div className={`relative ${i < education.length - 1 ? "pb-12" : ""}`}>
                 <span className="absolute -left-[39px] top-1.5 h-2.5 w-2.5 rounded-full border border-accent bg-ink sm:-left-[55px]" />
                 <p className="font-mono text-[12px] tracking-[0.12em] text-ash">{e.date}</p>
                 <h3 className="mt-2 font-display text-2xl font-light text-bone">{e.school}</h3>
@@ -29,11 +29,11 @@ export default function Provenance() {
                 )}
                 {e.coursework && (
                   <div className="mt-4 flex flex-wrap gap-2">
-                    {e.coursework.map((c, j) => (
+                    {e.coursework.map((c) => (
                       <span
                         key={c}
                         className={`rounded-full px-3 py-1 font-mono text-[11px] tracking-[0.04em] transition-colors duration-300 ${
-                          j < 2
+                          e.featuredCoursework?.includes(c)
                             ? "border border-accent/60 text-bone"
                             : "border border-hairline text-ash hover:border-accent/60 hover:text-bone"
                         }`}
