@@ -16,7 +16,8 @@ interface FrameProps {
  * mat that lifts slightly on hover, with a soft ochre glow behind it — the
  * frame itself stays black. The exhibit number sits in the top-left like a
  * wall label; an optional plaque is mounted at the bottom-center of the frame
- * like a museum label screwed to the frame itself. When `topMedia` is given,
+ * like a museum label screwed to the frame itself (on phones, where a long
+ * plaque would wrap over the mat, it sits just below the frame instead). When `topMedia` is given,
  * it bleeds to the frame's edges above the mat, and the exhibit number floats
  * on the media instead of the mat corner.
  */
@@ -54,7 +55,7 @@ export default function Frame({ children, index, plaque, topMedia, className = "
       </div>
 
       {plaque && (
-        <div className="absolute -bottom-3 left-1/2 max-w-[85%] -translate-x-1/2 rounded-sm bg-frame px-4 py-1.5 text-center font-mono text-[10px] uppercase leading-relaxed tracking-[0.2em] text-white shadow-[0_4px_10px_-2px_rgba(0,0,0,0.4)]">
+        <div className="mx-auto mt-3 w-fit max-w-full rounded-sm bg-frame px-4 py-1.5 text-center font-mono text-[10px] uppercase leading-relaxed tracking-[0.2em] text-white shadow-[0_4px_10px_-2px_rgba(0,0,0,0.4)] sm:absolute sm:-bottom-3 sm:left-1/2 sm:mx-0 sm:mt-0 sm:max-w-[85%] sm:-translate-x-1/2">
           {plaque}
         </div>
       )}
