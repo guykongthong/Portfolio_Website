@@ -97,6 +97,7 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
   return (
     <div className="group relative">
       <div
+        data-no-swipe={editing || undefined}
         onPointerDown={editing ? drag : undefined}
         onPointerMove={editing ? drag : undefined}
         className={`flex ${aspectClass} w-full items-center justify-center overflow-hidden ${
