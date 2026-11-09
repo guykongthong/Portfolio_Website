@@ -14,10 +14,10 @@ function slugify(name: string) {
     .replace(/^-+|-+$/g, "");
 }
 
-function slugFromHash() {
+function slugFromHash(prefix: string) {
   if (typeof window === "undefined") return null;
   const hash = window.location.hash.replace(/^#/, "");
-  return hash.startsWith("other-") ? hash.slice("other-".length) : null;
+  return hash.startsWith(`${prefix}-`) ? hash.slice(prefix.length + 1) : null;
 }
 
 /** The expanded write-up for one row: media (if any), meta, full stack, bullets, link. */
@@ -80,50 +80,62 @@ function OtherProjectPanel({ p }: { p: Project }) {
 }
 
 /**
- * The smaller pieces in the back room: a list of wall labels, one per
+ * Projects as a timeline of wall labels, one per
  * project, each opening in place to show the full piece. One label is open
- * at a time, and #other-<slug> opens (and scrolls to) a given piece.
+ * at a time, and #<prefix>-<slug> opens (and scrolls to) a given piece.
  */
-export default function OtherProjects({ items }: { items: Project[] }) {
+export default function OtherProjects({
+  items,
+  prefix = "other",
+}: {
+  items: Project[];
+  prefix?: string; // hash/id prefix, so two lists on one page don't collide
+}) {
   const reduce = useReducedMotion();
   const slugs = items.map((p) => slugify(p.name));
   const [open, setOpen] = useState<string | null>(() => {
-    const s = slugFromHash();
+    const s = slugFromHash(prefix);
     return s && slugs.includes(s) ? s : null;
   });
 
   useEffect(() => {
     const scrollToHash = () => {
-      const s = slugFromHash();
-      const row = s && document.getElementById(`other-${s}`);
+      const s = slugFromHash(prefix);
+      const row = s && document.getElementById(`${prefix}-${s}`);
       if (!row) return;
       setOpen(s);
       row.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
     };
-    if (slugFromHash()) scrollToHash();
+    if (slugFromHash(prefix)) scrollToHash();
     window.addEventListener("hashchange", scrollToHash);
     return () => window.removeEventListener("hashchange", scrollToHash);
-  }, [reduce]);
+  }, [reduce, prefix]);
 
   const toggle = (slug: string) => {
     const next = open === slug ? null : slug;
     setOpen(next);
     const url = window.location.pathname + window.location.search;
-    if (next) window.history.replaceState(null, "", `#other-${next}`);
-    else if (slugFromHash() === slug) window.history.replaceState(null, "", url);
+    if (next) window.history.replaceState(null, "", `#${prefix}-${next}`);
+    else if (slugFromHash(prefix) === slug) window.history.replaceState(null, "", url);
   };
 
   return (
-    <ul className="border-t border-hairline">
+    <ol className="relative ml-2 border-l border-hairline sm:ml-3">
       {items.map((p, i) => {
         const slug = slugs[i];
         const isOpen = open === slug;
-        const buttonId = `other-${slug}-label`;
-        const panelId = `other-${slug}-panel`;
+        const buttonId = `${prefix}-${slug}-label`;
+        const panelId = `${prefix}-${slug}-panel`;
         const stackSummary = p.stack.slice(0, STACK_PREVIEW).join(" · ") + (p.stack.length > STACK_PREVIEW ? " · …" : "");
 
         return (
-          <li key={p.name} id={`other-${slug}`} className="scroll-mt-24 border-b border-hairline">
+          <li key={p.name} id={`${prefix}-${slug}`} className="relative scroll-mt-24 pl-8 sm:pl-12">
+            <span
+              aria-hidden="true"
+              className={`absolute -left-[5.5px] top-[1.65rem] h-2.5 w-2.5 rounded-full border border-accent transition-colors duration-300 ${
+                isOpen ? "bg-accent" : "bg-ink"
+              }`}
+            />
             <h4>
               <button
                 id={buttonId}
@@ -178,6 +190,6 @@ export default function OtherProjects({ items }: { items: Project[] }) {
           </li>
         );
       })}
-    </ul>
+    </ol>
   );
 }

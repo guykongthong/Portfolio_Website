@@ -1,109 +1,20 @@
-import { useRef } from "react";
-import type { Project } from "../data/cv";
 import { otherProjects, projects } from "../data/cv";
 import SectionHeader from "../components/SectionHeader";
-import Frame from "../components/Frame";
-import ProjectMedia from "../components/ProjectMedia";
 import Reveal from "../components/Reveal";
 import OtherProjects from "../components/OtherProjects";
-import Carousel from "../components/Carousel";
-
-/** The name/tag/meta/stack/bullets/link write-up, shared by both card layouts below. */
-function ProjectDetails({ p }: { p: Project }) {
-  return (
-    <div className="flex flex-col">
-      <h3 className="font-display text-3xl font-light leading-[1.05] text-bone sm:text-4xl">
-        {p.name}
-      </h3>
-      <span className="mt-3 w-fit rounded-full border border-hairline px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-accent">
-        {p.tag}
-      </span>
-      <p className="mt-3 font-mono text-[12px] tracking-[0.08em] text-ash">{p.meta}</p>
-
-      <div className="mt-6 flex flex-wrap gap-2">
-        {p.stack.map((s) => (
-          <span
-            key={s}
-            className="rounded-full border border-hairline px-3 py-1 font-mono text-[11px] tracking-[0.04em] text-ash transition-colors duration-300 hover:border-accent/60 hover:text-bone"
-          >
-            {s}
-          </span>
-        ))}
-      </div>
-
-      <ul className="mt-6 flex flex-col gap-4">
-        {p.bullets.map((b, j) => (
-          <li key={j} className="flex gap-4 text-[15px] leading-relaxed text-ash">
-            <span className="mt-1 font-mono text-[11px] text-faint">
-              {String(j + 1).padStart(2, "0")}
-            </span>
-            <span>{b}</span>
-          </li>
-        ))}
-      </ul>
-
-      {p.liveHref && (
-        <a
-          href={p.liveHref}
-          target="_blank"
-          rel="noreferrer"
-          className="mt-6 w-fit border-b border-accent/60 font-mono text-[11px] uppercase tracking-[0.2em] text-accent transition-colors duration-300 hover:border-bone hover:text-bone"
-        >
-          {p.liveLabel ?? "View project"} ↗
-        </a>
-      )}
-    </div>
-  );
-}
-
-const projectName = (p: Project) => p.name;
-
-/** One project as a framed piece, in the stacked or side-by-side layout. */
-function ProjectPiece({ p, i }: { p: Project; i: number }) {
-  const stacked = p.media.length > 0 && p.mediaOrientation !== "portrait";
-  const index = String(i + 1).padStart(2, "0");
-  const plaque = `${p.name.toUpperCase()} · ${p.tag.toUpperCase()} · ${p.date}`;
-
-  return stacked ? (
-    <Frame
-      index={index}
-      plaque={plaque}
-      topMedia={<ProjectMedia media={p.media} name={p.name} orientation={p.mediaOrientation} bordered={false} />}
-    >
-      <ProjectDetails p={p} />
-    </Frame>
-  ) : (
-    <Frame index={index} plaque={plaque}>
-      <div
-        className={`grid items-center gap-10 lg:grid-cols-2 ${
-          i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""
-        }`}
-      >
-        <ProjectMedia media={p.media} name={p.name} orientation={p.mediaOrientation} />
-        <ProjectDetails p={p} />
-      </div>
-    </Frame>
-  );
-}
 
 const subheadClass =
   "mb-8 flex items-center gap-4 font-mono text-[11px] uppercase tracking-[0.3em] text-ash";
 
 /**
- * The gallery's main floor, walked one room at a time. Only the current
- * project hangs on the wall; a numbered room index above it jumps straight to
- * any piece, prev/next (buttons, arrow keys, or a swipe on touch screens)
- * walks to the neighbours, and the URL hash (#project-<slug>) remembers where
- * you are so a single piece can be linked. A project with landscape media
- * stacks it full-bleed on top of the write-up; portrait or missing media keeps
- * the side-by-side frame, alternating sides by position as before.
+ * The gallery's main floor: featured and smaller pieces both hang as wall
+ * labels. Each opens in place to show its bullets, one at a time, so the
+ * section stays short on a phone. #project-<slug> and #other-<slug> open a
+ * given piece.
  */
 export default function Projects() {
-  const sectionRef = useRef<HTMLElement>(null);
-
   return (
     <section
-      ref={sectionRef}
       id="projects"
       className="scroll-mt-24 border-t border-hairline/60 px-6 py-24 sm:px-10 sm:py-32"
     >
@@ -116,15 +27,7 @@ export default function Projects() {
               <span>Featured Projects</span>
               <span className="h-px flex-1 bg-hairline" />
             </h3>
-            <Carousel
-              items={projects}
-              getName={projectName}
-              noun="project"
-              label="Projects"
-              hashPrefix="project"
-              sectionRef={sectionRef}
-              renderItem={(proj, i) => <ProjectPiece p={proj} i={i} />}
-            />
+            <OtherProjects items={projects} prefix="project" />
           </Reveal>
         )}
 
