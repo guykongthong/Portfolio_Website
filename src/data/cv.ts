@@ -102,7 +102,7 @@ export const profile = {
   name: { first: "Virawit", nick: "Guy", last: "Kongthong" },
   role: "Software Engineer",
   exhibitionTitle: "Selected Works",
-  years: "2024 — 2026",
+  years: "2024 to 2026",
   location: "Chiang Mai, Thailand",
   summary:
     "Third-year Software Engineering student at Chiang Mai University, most interested in everything " +
@@ -127,15 +127,21 @@ export const contacts: ContactLink[] = [
 
 export const experiences: Experience[] = [
   {
+    role: "Software Engineer Intern",
+    institution: "Issa Compass (Bangkok, Thailand)",
+    date: "Incoming · Apr 2027 to Jun 2027",
+    bullets: [],
+  },
+  {
     role: "Teaching Assistant",
     institution: "Chiang Mai University",
-    date: "Nov 2025 — Present",
+    date: "Nov 2025 to Oct 2026",
     context:
       "953102: Abstract Data Types & Problem Solving · 953233: Advanced Programming · 953212: Database Systems & Design",
     medium: "Java · JavaFX · SQL · ER Modeling",
     bullets: [
-      "Mentor 90+ students across three courses: ADTs and Java design, advanced programming (JavaFX, multithreading, testing, build automation), and relational database systems.",
-      "Deliver lab sessions on Java implementation, SQL queries, and ER modeling; grade assignments and exams with feedback on code quality and design correctness.",
+      "Mentored 90+ students across three courses: ADTs and Java design, advanced programming (JavaFX, multithreading, testing, build automation), and relational database systems.",
+      "Delivered lab sessions on Java implementation, SQL queries, and ER modeling; graded assignments and exams with feedback on code quality and design correctness.",
     ],
   },
   {
@@ -152,7 +158,7 @@ export const experiences: Experience[] = [
   {
     role: "Backend Developer",
     institution: "CCMX 2027 (Chiang Mai University)",
-    date: "Freelance · Jul 2026 — Aug 2026",
+    date: "Freelance · Jul 2026 to Aug 2026",
     medium: "Cloudflare Workers · Hono · Supabase · Postgres RLS",
     bullets: [
       "Delivered the backend for a conference registration and abstract submission platform serving 300-600 medical professionals at a CMU-affiliated academic conference.",
@@ -165,7 +171,7 @@ export const experiences: Experience[] = [
 export const education: EducationEntry[] = [
   {
     school: "B.Sc. Software Engineering, Chiang Mai University",
-    date: "2024 — Expected 2028",
+    date: "2024 to Expected 2028",
     detail: "College of Arts, Media and Technology · 3rd Year",
     coursework: [
       "Software Design & Architecture",
@@ -183,7 +189,7 @@ export const education: EducationEntry[] = [
   },
   {
     school: "Lanna International School of Thailand",
-    date: "2017 — 2024",
+    date: "2017 to 2024",
   },
 ];
 
@@ -214,7 +220,7 @@ export const projects: Project[] = [
     name: "CCMX 2027 Conference Platform",
     tag: "Freelance",
     institution: "Chiang Mai University",
-    date: "Jul 2026 — Aug 2026",
+    date: "Jul 2026 to Aug 2026",
     meta: "Freelance · Conference Registration & Abstract Submission Platform",
     stack: ["Cloudflare Workers", "Hono", "Supabase", "Postgres RLS"],
     liveHref: "https://ccmxcmu.com/",
@@ -315,6 +321,21 @@ export const projects: Project[] = [
 
 // Smaller projects, shown as a compact expandable list under the featured carousel.
 export const otherProjects: Project[] = [
+  {
+    name: "Swiper",
+    tag: "Personal",
+    date: "Nov 2026",
+    meta: "Personal · macOS Menu Bar App",
+    stack: ["Swift", "SwiftUI", "AppKit", "SwiftPM", "CGEventTap", "IOHIDEvent", "Swift Testing"],
+    liveHref: "https://github.com/guykongthong/swiper",
+    liveLabel: "View repo",
+    bullets: [
+      "Built a menu bar app that gives any two-button mouse the trackpad three-finger swipe: hold both buttons and move sideways to switch desktops, or up to open Mission Control, following the system natural-scrolling setting.",
+      "Designed the chord detector as a pure state machine behind a CGEventTap that holds back clicks until the gesture is clear, unit tested with Swift Testing, and synthesized Dock swipe events through IOHIDEvent with a health check that detects when the gesture stops working.",
+      "Applied my requirements and architecture coursework with an SRS, use cases, diagrams, ADRs, and a defect log in GitHub issues, and shipped an MIT-licensed build on GitHub Releases.",
+    ],
+    media: [],
+  },
   {
     name: "LINE Arrival Notification Bot",
     tag: "Personal",
