@@ -6,7 +6,7 @@ import Statement from "../sections/Statement";
 import Exhibitions from "../sections/Exhibitions";
 import Projects from "../sections/Projects";
 import Materials from "../sections/Materials";
-import Provenance from "../sections/Provenance";
+import Education from "../sections/Education";
 import Recognition from "../sections/Recognition";
 import Activities from "../sections/Activities";
 
@@ -24,7 +24,7 @@ export default function Home() {
         <Exhibitions />
         <Projects />
         <Materials />
-        <Provenance />
+        <Education />
         <Recognition />
         <Activities />
       </main>

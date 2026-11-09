@@ -3,23 +3,22 @@ import SectionHeader from "../components/SectionHeader";
 import Reveal from "../components/Reveal";
 
 /**
- * Education as provenance — the documented history behind the work, set on a
- * vertical timeline rail.
+ * Education, set on a vertical timeline rail.
  */
-export default function Provenance() {
+export default function Education() {
   return (
     <section
-      id="provenance"
+      id="education"
       className="scroll-mt-24 border-t border-hairline/60 px-6 py-24 sm:px-10 sm:py-32"
     >
       <div className="mx-auto max-w-6xl">
-        <SectionHeader room="IV" kicker="History & Training" title="Provenance" />
+        <SectionHeader room="IV" kicker="History & Training" title="Education" />
 
-        <div className="relative ml-2 border-l border-hairline pl-8 sm:pl-12">
+        <div className="relative ml-2 border-l border-hairline pl-8 sm:ml-3 sm:pl-12">
           {education.map((e, i) => (
             <Reveal key={e.school} delay={i * 0.06}>
               <div className={`relative ${i < education.length - 1 ? "pb-12" : ""}`}>
-                <span className="absolute -left-[39px] top-1.5 h-2.5 w-2.5 rounded-full border border-accent bg-ink sm:-left-[55px]" />
+                <span className="absolute -left-[37.5px] top-1 h-2.5 w-2.5 rounded-full border border-accent bg-ink sm:-left-[53.5px]" />
                 <p className="font-mono text-[12px] tracking-[0.12em] text-ash">{e.date}</p>
                 <h3 className="mt-2 font-display text-2xl font-light text-bone">{e.school}</h3>
                 {e.detail && (
