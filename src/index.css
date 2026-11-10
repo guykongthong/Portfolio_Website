@@ -1,31 +1,90 @@
 @import "tailwindcss";
 
 /* ──────────────────────────────────────────────────────────────────────────
-   Design tokens — "The Exhibition" (Tailwind v4 @theme)
-   Exposes utilities like bg-ink, text-bone, text-accent, font-display, font-mono
+   Design tokens, "Gallery Exhibit" (Tailwind v4 @theme)
+   A cool, quiet gallery: pale sky walls by day, ink navy by night, white or
+   lifted navy for every frame, and one coral dot that marks what matters.
+   Light values live here; [data-theme="dark"] below swaps the same names, so
+   every utility (bg-bg, bg-surface, text-fg, text-fg-2, border-line, text-ink,
+   ...) follows the theme without dark: variants.
    ────────────────────────────────────────────────────────────────────────── */
 @theme {
-  --color-ink: #f5f1ea; /* gallery wall / page background — warm off-white */
-  --color-wall: #ece6da; /* raised panel / card surface */
-  --color-wall-2: #e3dbca; /* secondary panel */
-  --color-hairline: #d8d0c0; /* frame borders */
-  --color-bone: #1c1b19; /* primary text — soft charcoal */
-  --color-ash: #6b6862; /* muted text */
-  --color-faint: #9c968a; /* faintest text / dividers */
-  --color-accent: #b8863b; /* soft ochre */
-  --color-accent-dim: #8f6a2e;
-  --color-frame: #141414; /* black picture-frame border */
+  --color-bg: #ddebfa; /* page wall */
+  --color-surface: #ffffff; /* cards, frames */
+  --color-surface-2: #eef5fe; /* mats, chips */
+  --color-line: #b5cbe6; /* hairlines, decorative only */
+  --color-line-strong: #5d7eaa; /* frame edges, inputs (3:1 UI) */
+  --color-fg: #0a1f3d; /* primary text */
+  --color-fg-2: #3a557a; /* secondary text */
+  --color-accent: #ff6f4f; /* the red dot: fills and markers only in light mode */
+  --color-accent-ink: #b23a1e; /* accent when it has to be text */
+  --color-on-accent: #0a1f3d;
+  --color-ink: #2857c8; /* single ink for ASCII, dither and pixel icons */
+  --color-grid: #c9dcf2; /* hero dot wall */
+  --color-haze: #bed3ee; /* scroll sky glyphs behind the rooms */
 
-  --font-display: "Lora", Georgia, "Times New Roman", serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+  --font-display: "Pixelify Sans", ui-monospace, monospace;
+  --font-label: "Silkscreen", ui-monospace, monospace;
+  --font-sans: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", monospace;
+
+  /* fluid type scale, 360px to 1440px */
+  --text-display: clamp(3rem, 2rem + 5.4vw, 7rem);
+  --text-display--line-height: 0.95;
+  --text-h2: clamp(2rem, 1.6rem + 1.8vw, 3rem);
+  --text-h2--line-height: 1.05;
+  --text-h3: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
+  --text-h3--line-height: 1.2;
+  --text-sub: clamp(0.8125rem, 0.75rem + 0.3vw, 1rem);
+  --text-sub--line-height: 1.4;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.4;
+  --text-lead: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  --text-lead--line-height: 1.5;
+  --text-body: clamp(1rem, 0.96rem + 0.1vw, 1.0625rem);
+  --text-body--line-height: 1.65;
+
+  --animate-blink: blink 1s steps(1) infinite;
+  --animate-bob: bob 1.6s steps(2) infinite;
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes bob {
+    50% {
+      transform: translateY(3px);
+    }
+  }
+}
+
+/* ink navy night wall */
+:root[data-theme="dark"] {
+  --color-bg: #0a1426;
+  --color-surface: #13213b;
+  --color-surface-2: #1a2c4c;
+  --color-line: #2a4370;
+  --color-line-strong: #5e7fb3;
+  --color-fg: #f3f8ff;
+  --color-fg-2: #a8c5ec;
+  --color-accent: #ff8a6b;
+  --color-accent-ink: #ff9c80;
+  --color-on-accent: #0a1426;
+  --color-ink: #6fa0f2;
+  --color-grid: #16264a;
+  --color-haze: #1a2c50;
+  color-scheme: dark;
 }
 
 /* ── Base ── */
 :root {
-  font-family: var(--font-display);
-  line-height: 1.5;
-  color: var(--color-bone);
-  background-color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--color-fg);
+  background-color: var(--color-bg);
+  color-scheme: light;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -34,6 +93,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* non-static so framer-motion's useScroll can measure element offsets */
+  position: relative;
 }
 
 html,
@@ -44,52 +105,126 @@ body,
 
 body {
   margin: 0;
-  background-color: var(--color-ink);
+  background-color: var(--color-bg);
   overflow-x: hidden;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* in a layer, so Tailwind's text-* utilities still win on links */
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 ::selection {
-  background: var(--color-accent);
-  color: #fff;
+  background: var(--color-ink);
+  color: var(--color-surface);
 }
 
-/* Thin gallery scrollbar */
+/* focus never depends on the accent: 2px text colour, 3px offset, square */
+:focus-visible {
+  outline: 2px solid var(--color-fg);
+  outline-offset: 3px;
+}
+
+/* stepped corner tile, used for the nav monogram */
+.pixel-tile {
+  clip-path: polygon(
+    0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+    100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+    4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+  );
+}
+
+/* hero dot wall */
+.dot-wall {
+  background-color: var(--color-bg);
+  background-image: radial-gradient(var(--color-grid) 1.5px, transparent 1.6px);
+  background-size: 16px 16px;
+}
+
+/* the one phrase worth remembering in the statement: an inset coral underline */
+.mark-accent {
+  background: transparent;
+  color: inherit;
+  box-shadow: inset 0 -6px 0 var(--color-accent);
+}
+
+/* small square bullets in ink */
+.ink-bullets > li {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: 8px;
+}
+.ink-bullets > li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  margin-top: 0.7em;
+  background: var(--color-ink);
+}
+
+/* stepped photo develop, used by the hero portrait: 8 hard bands over 360ms.
+   Pointer devices develop on hover/focus, touch toggles .on with a tap. */
+.develop {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.36s steps(8);
+}
+.develop.on {
+  clip-path: inset(0 0 0 0);
+}
+@media (hover: hover) and (pointer: fine) {
+  .develop-trigger:hover .develop,
+  .develop-trigger:focus-visible .develop {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.hint-touch {
+  display: none;
+}
+@media (hover: none), (pointer: coarse) {
+  .hint-touch {
+    display: inline;
+  }
+  .hint-pointer {
+    display: none;
+  }
+}
+
+/* the scroll sky sits at 40% behind the content column and full in the gutters
+   (desktop only; on a phone the column is the whole screen, so no mask) */
+@media (min-width: 768px) {
+  .haze-mask {
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 14%, rgba(0, 0, 0, 0.4) 30%, rgba(0, 0, 0, 0.4) 70%, #000 86%, #000 100%);
+    mask-image: linear-gradient(90deg, #000 0%, #000 14%, rgba(0, 0, 0, 0.4) 30%, rgba(0, 0, 0, 0.4) 70%, #000 86%, #000 100%);
+  }
+}
+
+/* Materials keycaps: press down 2px on hover, and on :active for touch */
+.keycap {
+  box-shadow: 0 4px 0 var(--color-line-strong);
+  transition: transform 0.08s steps(2), box-shadow 0.08s steps(2);
+}
+.keycap:hover,
+.keycap:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--color-line-strong);
+}
+
+/* Thin scrollbar in the wall colours */
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-ink);
+  background: var(--color-bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-hairline);
-  border: 3px solid var(--color-ink);
-  border-radius: 999px;
+  background: var(--color-line);
+  border: 3px solid var(--color-bg);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-faint);
-}
-
-/* ── Film grain overlay texture ──
-   data-uri fractal noise; very low opacity, fixed, pointer-events off */
-.grain::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 160px 160px;
-}
-
-/* Vertical spine label for placards */
-.vertical-rl {
-  writing-mode: vertical-rl;
+  background: var(--color-line-strong);
 }
 
 /* Respect reduced motion for CSS-driven transitions */
@@ -103,5 +238,10 @@ a {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+  .keycap:hover,
+  .keycap:active {
+    transform: none;
+    box-shadow: 0 4px 0 var(--color-line-strong);
   }
 }
