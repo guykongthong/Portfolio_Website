@@ -32,7 +32,6 @@ import airGuitarHistory from "../assets/projects/air-guitar/history.png";
 import airGuitarTutor from "../assets/projects/air-guitar/tutor.png";
 import airGuitarTrain from "../assets/projects/air-guitar/train.png";
 import airGuitarTest from "../assets/projects/air-guitar/test.png";
-import lineBotFlow from "../assets/projects/line-bot/flow.png";
 import showproDemo from "../assets/projects/showpro/demo.mp4";
 
 export interface ContactLink {
@@ -59,7 +58,7 @@ export interface EducationEntry {
 }
 
 export interface ProjectMedia {
-  type: "image" | "video" | "embed"; // "embed" is an iframe URL, e.g. a YouTube embed
+  type: "image" | "video" | "embed" | "diagram"; // "embed" is an iframe URL, e.g. a YouTube embed; "diagram" is a mermaid chart, src is its id in data/diagrams.ts
   src: string;
   alt: string;
   fit?: "cover" | "contain"; // "contain" letterboxes portrait-oriented media instead of cropping it
@@ -339,7 +338,7 @@ export const otherProjects: Project[] = [
       "Designed the chord detector as a pure state machine behind a CGEventTap that holds back clicks until the gesture is clear, unit tested with Swift Testing, and synthesized Dock swipe events through IOHIDEvent with a health check that detects when the gesture stops working.",
       "Applied my requirements and architecture coursework with an SRS, use cases, diagrams, ADRs, and a defect log in GitHub issues, and shipped an MIT-licensed build on GitHub Releases.",
     ],
-    media: [],
+    media: [{ type: "diagram", src: "swiper", alt: "Swiper: flowchart of how the app turns holding both mouse buttons into a desktop swipe" }],
   },
   {
     name: "LINE Arrival Notification Bot",
@@ -356,7 +355,8 @@ export const otherProjects: Project[] = [
       "Recipients are added and deactivated automatically from LINE follow, unfollow, join, and leave events. Each push is logged, and the bot warns at 400 of the 500 free-tier messages per month.",
     ],
     media: [
-      { type: "image", src: lineBotFlow, alt: "LINE Arrival Notification Bot: flowchart of the arrival trigger and the recipient webhook", fit: "contain" },
+      { type: "diagram", src: "lineArrival", alt: "LINE Arrival Notification Bot: flowchart of the arrival trigger, from the iOS Shortcut to the LINE push" },
+      { type: "diagram", src: "lineWebhook", alt: "LINE Arrival Notification Bot: flowchart of the recipient webhook that adds and removes recipients" },
     ],
   },
   {
