@@ -1,6 +1,8 @@
 import { useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import type { ProjectMedia as ProjectMediaItem } from "../data/cv";
+import type { DiagramId } from "../data/diagrams";
+import MermaidDiagram from "./MermaidDiagram";
 
 interface ProjectMediaProps {
   media: ProjectMediaItem[];
@@ -45,18 +47,43 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
 
   if (!item) {
     return (
-      <div className={`flex ${aspectClass} w-full items-center justify-center border border-dashed border-hairline bg-wall-2`}>
+      <div className={`flex ${aspectClass} w-full items-center justify-center border border-dashed border-line-strong bg-surface-2`}>
         <div className="flex flex-col items-center gap-2 px-6 text-center">
-          <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-faint">
+          <span className="font-label text-label uppercase tracking-[0.06em] text-fg-2">
             Image coming soon
           </span>
-          <span className="font-display text-sm text-ash">{name}</span>
+          <span className="text-sm text-fg-2">{name}</span>
         </div>
       </div>
     );
   }
 
   const goTo = (i: number) => setIndex((i + media.length) % media.length);
+  if (item.type === "diagram") {
+    return (
+      <div className="group relative">
+        <div className={`flex w-full items-center bg-surface-2 ${bordered ? "border border-line" : ""} ${media.length > 1 ? "pb-8" : ""}`}>
+          <MermaidDiagram diagram={item.src as DiagramId} label={item.alt} />
+        </div>
+        {media.length > 1 && (
+          <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2">
+            {media.map((m, i) => (
+              <button
+                key={m.src}
+                type="button"
+                aria-label={`Show diagram ${i + 1} of ${media.length} for ${name}`}
+                onClick={() => goTo(i)}
+                className={`h-3 w-3 border border-line-strong transition-colors duration-150 ${
+                  i === index ? "bg-ink" : "bg-surface hover:bg-line-strong"
+                }`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   const fit = item.fit ?? "cover";
   const objectPosition = editing ? (pending ?? item.position ?? "50% 50%") : item.position;
 
@@ -101,8 +128,8 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
         onPointerDown={editing ? drag : undefined}
         onPointerMove={editing ? drag : undefined}
         className={`flex ${aspectClass} w-full items-center justify-center overflow-hidden ${
-          bordered ? "border border-hairline" : ""
-        } ${fit === "contain" ? "bg-wall-2" : ""} ${editing ? "cursor-crosshair" : ""}`}
+          bordered ? "border border-line" : ""
+        } ${fit === "contain" ? "bg-surface-2" : ""} ${editing ? "cursor-crosshair" : ""}`}
       >
         {item.type === "embed" ? (
           <iframe
@@ -138,7 +165,7 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
           type="button"
           aria-label={`Reposition ${item.alt}`}
           onClick={startEditing}
-          className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center border border-hairline bg-wall/80 font-mono text-sm text-bone opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:border-accent/60 hover:text-accent focus-visible:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
+          className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center border border-line-strong bg-surface font-mono text-sm text-fg opacity-0 transition-opacity duration-150 hover:border-fg focus-visible:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
         >
           ✥
         </button>
@@ -146,7 +173,7 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
 
       {import.meta.env.DEV && editing && (
         <div className="absolute inset-x-3 top-3 flex items-center justify-between gap-2">
-          <span className="rounded-sm bg-wall/90 px-2 py-1 font-mono text-[10px] tracking-[0.15em] text-bone backdrop-blur-sm">
+          <span className="bg-surface px-2 py-1 font-mono text-[10px] tracking-[0.15em] text-fg">
             {pending ?? item.position ?? "50% 50%"}
           </span>
           <div className="flex gap-2">
@@ -155,7 +182,7 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
                 type="button"
                 onClick={reset}
                 disabled={saving}
-                className="rounded-sm bg-wall/90 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-ash backdrop-blur-sm hover:text-accent disabled:opacity-50"
+                className="bg-surface px-2 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-fg-2 hover:text-fg disabled:opacity-50"
               >
                 Reset
               </button>
@@ -164,7 +191,7 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
               type="button"
               onClick={cancelEditing}
               disabled={saving}
-              className="rounded-sm bg-wall/90 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-ash backdrop-blur-sm hover:text-bone disabled:opacity-50"
+              className="bg-surface px-2 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-fg-2 hover:text-fg disabled:opacity-50"
             >
               Cancel
             </button>
@@ -172,7 +199,7 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
               type="button"
               onClick={save}
               disabled={saving}
-              className="rounded-sm bg-accent px-2 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-wall backdrop-blur-sm disabled:opacity-50"
+              className="bg-fg px-2 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-bg disabled:opacity-50"
             >
               {saving ? "Saving…" : "Save"}
             </button>
@@ -186,7 +213,7 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
             type="button"
             aria-label={`Previous image for ${name}`}
             onClick={() => goTo(index - 1)}
-            className="absolute left-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center border border-hairline bg-wall/80 font-mono text-sm text-bone opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:border-accent/60 hover:text-accent focus-visible:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
+            className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-line-strong bg-surface font-mono text-lg text-fg opacity-0 transition-opacity duration-150 hover:border-fg focus-visible:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
           >
             ‹
           </button>
@@ -194,7 +221,7 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
             type="button"
             aria-label={`Next image for ${name}`}
             onClick={() => goTo(index + 1)}
-            className="absolute right-3 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center border border-hairline bg-wall/80 font-mono text-sm text-bone opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:border-accent/60 hover:text-accent focus-visible:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
+            className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-line-strong bg-surface font-mono text-lg text-fg opacity-0 transition-opacity duration-150 hover:border-fg focus-visible:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
           >
             ›
           </button>
@@ -206,8 +233,8 @@ export default function ProjectMedia({ media, name, orientation = "landscape", b
                 type="button"
                 aria-label={`Show image ${i + 1} of ${media.length} for ${name}`}
                 onClick={() => goTo(i)}
-                className={`h-1.5 w-1.5 rounded-full border border-hairline transition-colors duration-300 ${
-                  i === index ? "bg-accent" : "bg-wall/80 hover:bg-ash"
+                className={`h-2 w-2 border border-line-strong transition-colors duration-150 ${
+                  i === index ? "bg-ink" : "bg-surface hover:bg-line-strong"
                 }`}
               />
             ))}

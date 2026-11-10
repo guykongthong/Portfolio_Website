@@ -42,7 +42,7 @@ import Reveal from "../components/Reveal";
  * Maps a skill label (as written in src/data/cv.ts) to its brand logo, mostly
  * Simple Icons from react-icons/si. Labels with no entry here (spoken
  * languages, generic terms like "REST APIs", "CI/CD" or "Containerization"
- * with no single brand mark) render as text pills.
+ * with no single brand mark) get a two-letter monogram keycap.
  *
  * Simple Icons no longer ships an Amazon/AWS mark, so "AWS EC2" borrows the
  * Font Awesome AWS logo. "Django REST Framework" reuses the Django glyph and
@@ -86,96 +86,36 @@ const iconMap: Record<string, IconType> = {
 };
 
 /**
- * Brand colour per icon (Simple Icons hex values where available). Brands
- * whose official colour is near-white or very pale on the off-white wall
- * (JavaScript, React, Supabase, EJS) are darkened a step so they stay legible;
- * black or near-black marks (Express, GitHub, Linux) use the charcoal text
- * token so they sit with the rest of the type. Any icon missing here falls
- * back to the muted ash colour.
- */
-const BONE = "var(--color-bone)";
-const brandColor: Record<string, string> = {
-  Java: "#ED8B00",
-  Python: "#3776AB",
-  JavaScript: "#C9A90A",
-  TypeScript: "#3178C6",
-  "C++": "#00599C",
-  "Node.js": "#5FA04E",
-  Express: BONE,
-  Hono: "#E36002",
-  Django: "#092E20",
-  "Django REST Framework": "#A30000",
-  "Spring Boot": "#6DB33F",
-  FastAPI: "#009688",
-  React: "#149ECA",
-  "Vue.js": "#4FC08D",
-  OpenAPI: "#6BA539",
-  "Tailwind CSS": "#06B6D4",
-  Bootstrap: "#7952B3",
-  EJS: "#8DA03C",
-  MySQL: "#4479A1",
-  PostgreSQL: "#4169E1",
-  "Supabase (Auth, Storage, Row Level Security)": "#2FB47C",
-  Docker: "#2496ED",
-  "Docker Compose": "#2496ED",
-  "GitHub Actions": "#2088FF",
-  "AWS EC2": "#FF9900",
-  "Cloudflare Workers": "#F38020",
-  Linux: BONE,
-  Git: "#F05032",
-  GitHub: BONE,
-  GitLab: "#FC6D26",
-  SonarQube: "#4E9BCD",
-  Postman: "#FF6C37",
-  Figma: "#F24E1E",
-  Jira: "#0052CC",
-};
-
-/**
- * Skills as the artist's materials, now an interactive icon grid grouped by
- * discipline. Hovering a tile lifts the icon and reveals its label, like
- * reading a small placard next to a tool on display.
+ * Room 04, display cases: each skill row from cv.ts is a case of pixel
+ * keycaps, the marks all in the one ink colour so the cases read as a single
+ * family. A skill with no brand mark gets a two-letter monogram instead.
  */
 export default function Materials() {
   return (
-    <section
-      id="materials"
-      className="scroll-mt-24 border-t border-hairline/60 px-6 py-24 sm:px-10 sm:py-32"
-    >
-      <div className="mx-auto max-w-6xl">
-        <SectionHeader room="III" kicker="Tools & Techniques" title="Materials" />
+    <section id="materials" aria-labelledby="materials-h" className="relative scroll-mt-16 px-5 py-[72px] sm:px-16 sm:py-28">
+      <div className="mx-auto max-w-[1056px]">
+        <SectionHeader room="04" meta={`${skills.length} cases`} title="Materials" id="materials-h">
+          <p className="mb-0 mt-4 max-w-[600px] text-body text-fg-2">What the pieces in this exhibit are made from.</p>
+        </SectionHeader>
 
-        <div className="divide-y divide-hairline border-y border-hairline">
-          {skills.map((row, i) => {
-            const withIcon = row.items.filter((item) => iconMap[item]);
-            const withoutIcon = row.items.filter((item) => !iconMap[item]);
-            return (
-              <Reveal key={row.label} delay={i * 0.04}>
-                <div className="grid grid-cols-1 gap-5 py-8 sm:grid-cols-[200px_1fr] sm:gap-8">
-                  <p className="font-mono text-[12px] uppercase tracking-[0.22em] text-accent">
-                    {row.label}
-                  </p>
-                  <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
-                    {withIcon.map((item) => (
-                      <TechIcon key={item} icon={iconMap[item]} color={brandColor[item]} label={item} />
-                    ))}
-                    {withoutIcon.length > 0 && (
-                      <>
-                        {withIcon.length > 0 && (
-                          <span aria-hidden="true" className="h-8 w-px bg-hairline" />
-                        )}
-                        <div className="flex flex-wrap items-center gap-2">
-                          {withoutIcon.map((item) => (
-                            <TechIcon key={item} icon={undefined} label={item} />
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </div>
+        <div className="mt-8 flex flex-col md:mt-14">
+          {skills.map((row, i) => (
+            <Reveal key={row.label}>
+              <div className="grid grid-cols-1 gap-3.5 border-t border-line py-[22px] md:grid-cols-[220px_minmax(0,1fr)] md:gap-8 md:py-7">
+                <div className="flex items-baseline justify-between gap-1 md:flex-col md:justify-start md:pt-1.5">
+                  <h3 className="m-0 font-display text-[20px] font-medium leading-tight md:text-h3">{row.label}</h3>
+                  <span className="font-label text-label uppercase tracking-[0.06em] text-fg-2">
+                    Case {String(i + 1).padStart(2, "0")}
+                  </span>
                 </div>
-              </Reveal>
-            );
-          })}
+                <ul className="m-0 grid list-none grid-cols-3 gap-2.5 p-0 pb-1 sm:grid-cols-[repeat(auto-fill,minmax(112px,1fr))] sm:gap-4">
+                  {row.items.map((item) => (
+                    <TechIcon key={item} icon={iconMap[item]} label={item} />
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

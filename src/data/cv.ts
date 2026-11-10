@@ -32,7 +32,6 @@ import airGuitarHistory from "../assets/projects/air-guitar/history.png";
 import airGuitarTutor from "../assets/projects/air-guitar/tutor.png";
 import airGuitarTrain from "../assets/projects/air-guitar/train.png";
 import airGuitarTest from "../assets/projects/air-guitar/test.png";
-import lineBotFlow from "../assets/projects/line-bot/flow.png";
 import showproDemo from "../assets/projects/showpro/demo.mp4";
 
 export interface ContactLink {
@@ -59,7 +58,7 @@ export interface EducationEntry {
 }
 
 export interface ProjectMedia {
-  type: "image" | "video" | "embed"; // "embed" is an iframe URL, e.g. a YouTube embed
+  type: "image" | "video" | "embed" | "diagram"; // "embed" is an iframe URL, e.g. a YouTube embed; "diagram" is a mermaid chart, src is its id in data/diagrams.ts
   src: string;
   alt: string;
   fit?: "cover" | "contain"; // "contain" letterboxes portrait-oriented media instead of cropping it
@@ -102,8 +101,13 @@ export const profile = {
   name: { first: "Virawit", nick: "Guy", last: "Kongthong" },
   role: "Software Engineer",
   exhibitionTitle: "Selected Works",
-  years: "2024 — 2026",
+  years: "2024 to 2026",
   location: "Chiang Mai, Thailand",
+  // one-line intro under the name in the hero
+  tagline:
+    "A working catalogue of systems built, students taught, and problems solved, arranged as an exhibition.",
+  // phrase inside the first sentence of `summary` that the Statement underlines in coral
+  summaryHighlight: "everything around the code",
   summary:
     "Third-year Software Engineering student at Chiang Mai University, most interested in everything " +
     "around the code: requirements, design, process, and what happens after it ships. Competitive " +
@@ -127,15 +131,21 @@ export const contacts: ContactLink[] = [
 
 export const experiences: Experience[] = [
   {
+    role: "Software Engineer Intern",
+    institution: "Issa Compass (Bangkok, Thailand)",
+    date: "Incoming · Apr 2027 to Jun 2027",
+    bullets: [],
+  },
+  {
     role: "Teaching Assistant",
     institution: "Chiang Mai University",
-    date: "Nov 2025 — Present",
+    date: "Nov 2025 to Oct 2026",
     context:
       "953102: Abstract Data Types & Problem Solving · 953233: Advanced Programming · 953212: Database Systems & Design",
     medium: "Java · JavaFX · SQL · ER Modeling",
     bullets: [
-      "Mentor 90+ students across three courses: ADTs and Java design, advanced programming (JavaFX, multithreading, testing, build automation), and relational database systems.",
-      "Deliver lab sessions on Java implementation, SQL queries, and ER modeling; grade assignments and exams with feedback on code quality and design correctness.",
+      "Mentored 90+ students across three courses: ADTs and Java design, advanced programming (JavaFX, multithreading, testing, build automation), and relational database systems.",
+      "Delivered lab sessions on Java implementation, SQL queries, and ER modeling; graded assignments and exams with feedback on code quality and design correctness.",
     ],
   },
   {
@@ -152,7 +162,7 @@ export const experiences: Experience[] = [
   {
     role: "Backend Developer",
     institution: "CCMX 2027 (Chiang Mai University)",
-    date: "Freelance · Jul 2026 — Aug 2026",
+    date: "Freelance · Jul 2026 to Aug 2026",
     medium: "Cloudflare Workers · Hono · Supabase · Postgres RLS",
     bullets: [
       "Delivered the backend for a conference registration and abstract submission platform serving 300-600 medical professionals at a CMU-affiliated academic conference.",
@@ -165,7 +175,7 @@ export const experiences: Experience[] = [
 export const education: EducationEntry[] = [
   {
     school: "B.Sc. Software Engineering, Chiang Mai University",
-    date: "2024 — Expected 2028",
+    date: "2024 to Expected 2028",
     detail: "College of Arts, Media and Technology · 3rd Year",
     coursework: [
       "Software Design & Architecture",
@@ -183,7 +193,7 @@ export const education: EducationEntry[] = [
   },
   {
     school: "Lanna International School of Thailand",
-    date: "2017 — 2024",
+    date: "2017 to 2024",
   },
 ];
 
@@ -214,7 +224,7 @@ export const projects: Project[] = [
     name: "CCMX 2027 Conference Platform",
     tag: "Freelance",
     institution: "Chiang Mai University",
-    date: "Jul 2026 — Aug 2026",
+    date: "Jul 2026 to Aug 2026",
     meta: "Freelance · Conference Registration & Abstract Submission Platform",
     stack: ["Cloudflare Workers", "Hono", "Supabase", "Postgres RLS"],
     liveHref: "https://ccmxcmu.com/",
@@ -316,6 +326,21 @@ export const projects: Project[] = [
 // Smaller projects, shown as a compact expandable list under the featured carousel.
 export const otherProjects: Project[] = [
   {
+    name: "Swiper",
+    tag: "Personal",
+    date: "Nov 2026",
+    meta: "Personal · macOS Menu Bar App",
+    stack: ["Swift", "SwiftUI", "AppKit", "SwiftPM", "CGEventTap", "IOHIDEvent", "Swift Testing"],
+    liveHref: "https://github.com/guykongthong/swiper",
+    liveLabel: "View repo",
+    bullets: [
+      "Built a menu bar app that gives any two-button mouse the trackpad three-finger swipe: hold both buttons and move sideways to switch desktops, or up to open Mission Control, following the system natural-scrolling setting.",
+      "Designed the chord detector as a pure state machine behind a CGEventTap that holds back clicks until the gesture is clear, unit tested with Swift Testing, and synthesized Dock swipe events through IOHIDEvent with a health check that detects when the gesture stops working.",
+      "Applied my requirements and architecture coursework with an SRS, use cases, diagrams, ADRs, and a defect log in GitHub issues, and shipped an MIT-licensed build on GitHub Releases.",
+    ],
+    media: [{ type: "diagram", src: "swiper", alt: "Swiper: flowchart of how the app turns holding both mouse buttons into a desktop swipe" }],
+  },
+  {
     name: "LINE Arrival Notification Bot",
     tag: "Personal",
     date: "2026",
@@ -330,7 +355,8 @@ export const otherProjects: Project[] = [
       "Recipients are added and deactivated automatically from LINE follow, unfollow, join, and leave events. Each push is logged, and the bot warns at 400 of the 500 free-tier messages per month.",
     ],
     media: [
-      { type: "image", src: lineBotFlow, alt: "LINE Arrival Notification Bot: flowchart of the arrival trigger and the recipient webhook", fit: "contain" },
+      { type: "diagram", src: "lineArrival", alt: "LINE Arrival Notification Bot: flowchart of the arrival trigger, from the iOS Shortcut to the LINE push" },
+      { type: "diagram", src: "lineWebhook", alt: "LINE Arrival Notification Bot: flowchart of the recipient webhook that adds and removes recipients" },
     ],
   },
   {
