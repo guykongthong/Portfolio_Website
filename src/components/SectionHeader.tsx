@@ -1,34 +1,43 @@
-import Reveal from "./Reveal";
+import type { ReactNode } from "react";
+import { numeral } from "../lib/glyphs";
 
 interface SectionHeaderProps {
-  /** room number, e.g. "I" or "01" */
+  /** room number, "01" to "07" */
   room: string;
-  /** mono kicker, e.g. "Curatorial Statement" */
-  kicker: string;
-  /** serif title */
+  /** right-hand label on the rule, e.g. "4 roles" */
+  meta?: string;
   title: string;
+  /** id for the h2, so the section can be aria-labelledby it */
+  id?: string;
+  /** optional line(s) under the title */
+  children?: ReactNode;
 }
 
 /**
- * Consistent room sign for every section: a numbered crimson kicker over a serif
- * title, with a hairline rule trailing off to the right.
+ * The room sign every section opens with: "Room 02" and a count on a hairline
+ * rule, the pixel-face title, and the room number drawn in ink glyphs on the
+ * right (decorative, hidden from screen readers).
  */
-export default function SectionHeader({ room, kicker, title }: SectionHeaderProps) {
+export default function SectionHeader({ room, meta, title, id, children }: SectionHeaderProps) {
   return (
-    <Reveal>
-      <div className="mb-12">
-        <div className="flex items-center gap-4 font-mono text-[11px] uppercase tracking-[0.3em] text-accent">
-          <span>{room}</span>
-          <span className="h-px w-8 bg-accent/50" />
-          <span className="text-ash">{kicker}</span>
-        </div>
-        <div className="mt-4 flex items-end gap-6">
-          <h2 className="font-display text-4xl font-light leading-none text-bone sm:text-5xl">
-            {title}
-          </h2>
-          <span className="mb-1.5 hidden h-px flex-1 bg-hairline sm:block" />
-        </div>
+    <div>
+      <div className="flex items-center gap-4 font-label text-label uppercase tracking-[0.06em] text-fg-2">
+        <span>Room {room}</span>
+        <span aria-hidden="true" className="h-px flex-1 bg-line" />
+        {meta && <span>{meta}</span>}
       </div>
-    </Reveal>
+      <div className="flex items-end justify-between gap-6">
+        <h2 id={id} className="mt-5 font-display text-h2 font-medium">
+          {title}
+        </h2>
+        <pre
+          aria-hidden="true"
+          className="m-0 shrink-0 font-mono text-[6px] leading-[6px] text-ink sm:text-[10px] sm:leading-[10px]"
+        >
+          {numeral(room)}
+        </pre>
+      </div>
+      {children}
+    </div>
   );
 }

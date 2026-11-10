@@ -1,97 +1,271 @@
-import { motion, useReducedMotion } from "framer-motion";
-import type { Variants } from "framer-motion";
-import { profile } from "../data/cv";
+import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "framer-motion";
+import { experiences, profile } from "../data/cv";
+import { RAMP, hash2, levelsFromImage, scramble } from "../lib/glyphs";
+import Frame from "../components/Frame";
+import portrait from "../assets/profile/portrait.jpg";
 
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const DECODE_MS = 1100;
+const SUB_EVERY = 3200;
+const SUB_SCRAMBLE = 400;
+const COLS = 60;
+const ROWS = 45; // 60 x 0.6 / 45 = a 4:5 grid
+const SESSION_KEY = "hero-decoded";
+
+// the role line rotates through the headline role and the other hats from Work Experience
+const subtitles = [
+  profile.role,
+  ...experiences.map((e) => e.role).filter((r, i, all) => !r.startsWith(profile.role) && all.indexOf(r) === i),
+];
+const nameLines = [profile.name.first, profile.name.last];
+const fullName = nameLines.join(" ");
+
+function renderLevels(levels: Uint8Array, p: number, shimmer?: Map<number, number>) {
+  let out = "";
+  for (let y = 0; y < ROWS; y++) {
+    for (let x = 0; x < COLS; x++) {
+      const i = y * COLS + x;
+      let k = levels[i];
+      if (p < 1 && hash2(x * 7, y * 13) > p) k = Math.floor(Math.random() * 10);
+      else if (shimmer && k > 1 && shimmer.has(i)) k = Math.max(1, Math.min(9, k + shimmer.get(i)!));
+      out += RAMP[k];
+    }
+    if (y < ROWS - 1) out += "\n";
+  }
+  return out;
+}
+
+function alreadyDecoded() {
+  try {
+    return sessionStorage.getItem(SESSION_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
 
 /**
- * The entrance hall. The name is lit by a soft overhead "spotlight" gradient and
- * revealed line by line on load. Mono captions frame it like an exhibition title card.
+ * Room 00, the entrance. The name decodes out of random glyphs once per
+ * session (1.1s), the role line under it rotates every 3.2s, and the first
+ * piece on the wall is an ASCII self-portrait generated from the real photo,
+ * which develops in 8 stepped bands on hover/focus, or toggles with a tap.
+ * The real name is always in the DOM (an invisible copy holds the width, the
+ * h1 carries aria-label). Reduced motion: everything renders final and still.
  */
 export default function Hero() {
   const reduce = useReducedMotion();
+  // read once on mount, so finishing the decode doesn't restart the effects
+  const [seen] = useState(alreadyDecoded);
+  const skip = !!reduce || seen;
+  const [shown, setShown] = useState<string[]>(nameLines);
+  const [sub, setSub] = useState(subtitles[0]);
+  const [revealed, setRevealed] = useState(false);
+  const preRef = useRef<HTMLPreElement>(null);
+  const pieceRef = useRef<HTMLButtonElement>(null);
+  const paused = useRef(false);
+  const subIndex = useRef(0);
+  const advance = useRef<() => void>(() => {});
 
-  const container: Variants = {
-    hidden: {},
-    show: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
-  };
-  const line: Variants = {
-    hidden: reduce ? {} : { opacity: 0, y: 40 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: EASE } },
-  };
+  // name decode + subtitle rotation, one 50ms ticker
+  useEffect(() => {
+    if (reduce) {
+      setShown(nameLines);
+      setSub(subtitles[0]);
+      return;
+    }
+    const t0 = performance.now() - (skip ? DECODE_MS : 0);
+    let subStart = t0 + DECODE_MS;
+    let decoded = skip;
+    let rotated = false;
+    const timer = window.setInterval(() => {
+      const now = performance.now();
+      const el = now - t0;
+      if (!decoded) {
+        const p = Math.min(1, el / DECODE_MS);
+        setShown(p >= 1 ? nameLines : nameLines.map((l) => scramble(l, p)));
+        setSub(p >= 1 ? subtitles[0] : scramble(subtitles[0], p));
+        if (p >= 1) {
+          decoded = true;
+          try {
+            sessionStorage.setItem(SESSION_KEY, "1");
+          } catch {
+            // no storage, it will just decode again next load
+          }
+        }
+        return;
+      }
+      if (subtitles.length < 2) return;
+      // hovering/focusing the line, or a hidden tab, holds it still
+      if (paused.current || document.hidden) {
+        subStart += 50;
+        return;
+      }
+      if (now - subStart >= SUB_EVERY) {
+        subIndex.current = (subIndex.current + 1) % subtitles.length;
+        subStart = now;
+        rotated = true;
+      }
+      // the new phrase resolves over 400ms, then holds
+      const ph = now - subStart;
+      const target = subtitles[subIndex.current];
+      setSub(rotated && ph < SUB_SCRAMBLE ? scramble(target, 0.25 + (ph / SUB_SCRAMBLE) * 0.75) : target);
+    }, 50);
+    advance.current = () => {
+      subStart = performance.now() - SUB_EVERY;
+    };
+    return () => clearInterval(timer);
+  }, [reduce, skip]);
+
+  // ASCII portrait: sample the photo once, develop it with the name, then a faint shimmer
+  useEffect(() => {
+    let cancelled = false;
+    let decodeTimer = 0;
+    let shimmerTimer = 0;
+    let visible = true;
+    let levels: Uint8Array | null = null;
+    const pre = preRef.current;
+    const write = (s: string) => {
+      if (pre) pre.textContent = s;
+    };
+
+    const startShimmer = () => {
+      if (reduce || shimmerTimer || !levels) return;
+      shimmerTimer = window.setInterval(() => {
+        if (!visible || document.hidden || !levels) return;
+        const sh = new Map<number, number>();
+        for (let j = 0; j < 18; j++) sh.set(Math.floor(Math.random() * COLS * ROWS), Math.random() < 0.5 ? -1 : 1);
+        write(renderLevels(levels, 1, sh));
+      }, 180);
+    };
+
+    const img = new Image();
+    img.decoding = "async";
+    img.src = portrait;
+    img.onload = () => {
+      if (cancelled) return;
+      levels = levelsFromImage(img, COLS, ROWS);
+      if (!levels) return;
+      const lv = levels;
+      if (skip) {
+        write(renderLevels(lv, 1));
+        startShimmer();
+        return;
+      }
+      const t0 = performance.now();
+      decodeTimer = window.setInterval(() => {
+        const p = Math.min(1, (performance.now() - t0) / DECODE_MS);
+        write(renderLevels(lv, p));
+        if (p >= 1) {
+          clearInterval(decodeTimer);
+          startShimmer();
+        }
+      }, 50);
+    };
+
+    const io = new IntersectionObserver((e) => {
+      visible = e[0]?.isIntersecting ?? true;
+    });
+    if (pieceRef.current) io.observe(pieceRef.current);
+
+    return () => {
+      cancelled = true;
+      img.onload = null;
+      clearInterval(decodeTimer);
+      clearInterval(shimmerTimer);
+      io.disconnect();
+    };
+  }, [reduce, skip]);
 
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden px-6 pb-20 pt-28 sm:px-10"
+      aria-label="Entrance"
+      className="dot-wall relative z-10 -mt-16 pt-16 lg:-mt-[72px] lg:pt-[72px]"
     >
-      {/* overhead spotlight */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(70% 55% at 50% 0%, rgba(223,59,52,0.10) 0%, transparent 55%), radial-gradient(80% 70% at 50% 38%, rgba(255,255,255,0.045) 0%, transparent 60%)",
-        }}
-      />
+      <div className="mx-auto grid min-h-[calc(100svh-4rem)] max-w-[1440px] grid-cols-1 gap-y-7 px-5 pb-8 pt-6 lg:min-h-[calc(100svh-72px)] lg:grid-cols-[minmax(0,1fr)_300px] lg:grid-rows-[auto_1fr_auto] lg:gap-x-16 lg:gap-y-8 lg:px-16 lg:pb-14 lg:pt-8 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="flex flex-wrap justify-between gap-x-4 gap-y-2 font-label text-label uppercase tracking-[0.06em] text-fg-2 lg:col-span-2">
+          <span>Exhibit {profile.years} / Entrance</span>
+          <span>{profile.location}</span>
+        </div>
 
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="relative mx-auto w-full max-w-6xl"
-      >
-        <motion.div
-          variants={line}
-          className="mb-8 flex items-center gap-4 font-mono text-[11px] uppercase tracking-[0.3em] text-ash"
-        >
-          <span className="h-px w-10 bg-accent" />
-          {profile.role}
-          <span className="text-faint">/</span>
-          {profile.exhibitionTitle}
-        </motion.div>
+        <div className="relative self-center py-6 pl-5 lg:col-start-1 lg:row-start-2 lg:py-10 lg:pl-11">
+          <span aria-hidden="true" className="absolute left-0 top-0 h-3.5 w-3.5 border-l-2 border-t-2 border-line-strong lg:h-5 lg:w-5" />
+          <span aria-hidden="true" className="absolute bottom-0 left-0 h-3.5 w-3.5 border-b-2 border-l-2 border-line-strong lg:h-5 lg:w-5" />
 
-        <h1 className="font-display font-light leading-[0.86] tracking-[-0.02em] text-bone">
-          <motion.span variants={line} className="block text-[18vw] sm:text-[15vw] lg:text-[12rem]">
-            {profile.name.first}
-          </motion.span>
-          <motion.span
-            variants={line}
-            className="block pl-[0.06em] text-[18vw] italic sm:text-[15vw] lg:text-[12rem]"
+          <h1 aria-label={fullName} className="m-0 font-display text-display font-semibold tracking-[-0.01em]">
+            {nameLines.map((line, i) => (
+              <span key={i} className="relative block">
+                <span aria-hidden="true" className="invisible">
+                  {line}
+                </span>
+                <span aria-hidden="true" className="absolute inset-0 whitespace-nowrap">
+                  {shown[i] ?? line}
+                </span>
+              </span>
+            ))}
+          </h1>
+
+          <p
+            className="mt-5 flex min-h-6 items-center gap-1.5 font-label text-sub uppercase tracking-[0.06em] lg:mt-7"
+            onPointerEnter={(e) => {
+              if (e.pointerType === "mouse") paused.current = true;
+            }}
+            onPointerLeave={() => (paused.current = false)}
+            onClick={() => advance.current()}
           >
-            {profile.name.last}
-          </motion.span>
-        </h1>
-
-        <motion.div
-          variants={line}
-          className="mt-10 flex max-w-3xl flex-col gap-6 sm:flex-row sm:items-end sm:justify-between"
-        >
-          <p className="max-w-md font-display text-lg leading-relaxed text-ash">
-            A working catalogue of systems built, students taught, and problems solved —
-            arranged as an exhibition.
+            <span aria-hidden="true">{sub}</span>
+            <span aria-hidden="true" className="inline-block h-3.5 w-2 animate-blink bg-accent lg:h-[18px] lg:w-2.5" />
+            <span className="sr-only">{subtitles.join(", ")}</span>
           </p>
-          <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-faint">
-            {profile.location}
-          </span>
-        </motion.div>
-      </motion.div>
 
-      {/* scroll cue */}
-      <motion.a
-        href="#statement"
-        variants={line}
-        initial="hidden"
-        animate="show"
-        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 font-mono text-[10px] uppercase tracking-[0.3em] text-faint sm:flex"
-      >
-        Enter
-        <span className="h-10 w-px overflow-hidden bg-hairline">
-          <span className="block h-1/2 w-full animate-[scrollcue_1.8s_ease-in-out_infinite] bg-accent" />
-        </span>
-      </motion.a>
+          <p className="mt-5 max-w-[600px] text-lead text-fg-2">{profile.tagline}</p>
+        </div>
 
-      <style>{`@keyframes scrollcue{0%{transform:translateY(-100%)}100%{transform:translateY(200%)}}`}</style>
+        <div className="w-full max-w-[420px] lg:col-start-2 lg:row-start-2 lg:max-w-none lg:self-center">
+          <Frame>
+            <button
+              ref={pieceRef}
+              type="button"
+              aria-pressed={revealed}
+              aria-label={`Show photo of ${fullName}`}
+              onClick={() => setRevealed((v) => !v)}
+              className="develop-trigger relative block aspect-[4/5] w-full cursor-pointer overflow-hidden bg-surface-2 [container-type:inline-size]"
+            >
+              <pre
+                ref={preRef}
+                aria-hidden="true"
+                className="absolute inset-0 m-0 flex items-center justify-center overflow-hidden font-mono text-[calc(100cqw/36)] leading-[calc(100cqw/36)] text-ink"
+              />
+              <img
+                src={portrait}
+                alt=""
+                className={`develop absolute inset-0 h-full w-full object-cover object-[50%_60%] ${revealed ? "on" : ""}`}
+              />
+              <span
+                aria-hidden="true"
+                className="absolute bottom-2.5 right-2.5 border border-line-strong bg-surface px-2 py-1 font-label text-label uppercase tracking-[0.06em] text-fg"
+              >
+                {revealed ? (
+                  "Showing photo"
+                ) : (
+                  <>
+                    <span className="hint-pointer">Hover to develop</span>
+                    <span className="hint-touch">Tap to reveal</span>
+                  </>
+                )}
+              </span>
+            </button>
+          </Frame>
+        </div>
+
+        <div className="lg:col-start-1 lg:row-start-3 lg:self-end">
+          <a href="#statement" className="inline-flex min-h-11 items-center gap-3 text-fg-2 transition-colors duration-150 hover:text-fg">
+            <svg width="16" height="16" viewBox="0 0 16 16" shapeRendering="crispEdges" fill="currentColor" aria-hidden="true" className="animate-bob">
+              <path d="M7 1h2v9h2V8h2v2h-1v1h-1v1h-1v1H9v1H7v-1H6v-1H5v-1H4v-1H3V8h2v2h2z" />
+            </svg>
+            <span className="font-label text-label uppercase tracking-[0.06em]">Scroll to enter</span>
+          </a>
+        </div>
+      </div>
     </section>
   );
 }

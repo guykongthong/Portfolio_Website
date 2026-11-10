@@ -1,38 +1,44 @@
 import type { IconType } from "react-icons";
 
 interface TechIconProps {
-  /** Brand icon component from react-icons; omit to render a plain text pill */
+  /** brand mark from react-icons; omit and a two-letter monogram stands in */
   icon?: IconType;
-  /** Brand hex colour for the glyph; falls back to the muted text colour */
-  color?: string;
   label: string;
 }
 
-/**
- * One tile in the Materials icon grid. With an icon: a glyph in its brand
- * colour that lifts on hover, with its label beneath it like a placard.
- * Without an icon (e.g. spoken languages, generic terms): falls back to the
- * same pill style used for project stack tags, so the grid never has empty
- * holes.
- */
-export default function TechIcon({ icon: Icon, color, label }: TechIconProps) {
-  if (!Icon) {
-    return (
-      <span className="rounded-full border border-hairline px-3 py-1 font-mono text-[11px] tracking-[0.04em] text-ash">
-        {label}
-      </span>
-    );
-  }
+// cv.ts writes spoken languages as "Thai <long dash> Native"; show those as name + note
+const LONG_DASH = ` ${String.fromCharCode(0x2014)} `;
+function splitLabel(label: string) {
+  const parts = label.split(LONG_DASH);
+  return parts.length > 1 ? [parts[0], parts.slice(1).join(" ")] : [label, ""];
+}
 
+function monogram(name: string) {
+  const letters = name.replace(/[^A-Za-z0-9+#]/g, "");
+  return letters.slice(0, 2).toUpperCase();
+}
+
+/**
+ * One keycap in a Materials display case: a pixel-keyboard key with the mark
+ * (or monogram) in the single ink colour and the name under it. It presses
+ * down 2px on hover, and on :active so a tap gets the same feedback; nothing
+ * is hidden behind the press.
+ */
+export default function TechIcon({ icon: Icon, label }: TechIconProps) {
+  const [name, note] = splitLabel(label);
   return (
-    <div className="group flex w-20 flex-col items-center gap-2">
-      <Icon
-        className="h-7 w-7 text-ash transition-all duration-300 group-hover:-translate-y-1 group-hover:opacity-80"
-        style={color ? { color } : undefined}
-      />
-      <span className="max-w-[80px] text-center font-mono text-[9px] uppercase leading-tight tracking-[0.08em] text-faint transition-colors duration-300 group-hover:text-ash">
-        {label}
+    <li className="keycap flex min-h-[88px] flex-col justify-between gap-2 border-2 border-line-strong bg-surface p-2.5 md:min-h-[112px] md:p-3">
+      {Icon ? (
+        <Icon aria-hidden="true" className="h-6 w-6 text-ink md:h-7 md:w-7" />
+      ) : (
+        <span aria-hidden="true" className="font-display text-[24px] font-semibold leading-none text-ink md:text-[30px]">
+          {monogram(name)}
+        </span>
+      )}
+      <span className="flex flex-col">
+        <span className="text-[13px] font-medium leading-tight break-words hyphens-auto md:text-[14px]">{name}</span>
+        {note && <span className="text-[12px] leading-tight text-fg-2">{note}</span>}
       </span>
-    </div>
+    </li>
   );
 }

@@ -104,6 +104,11 @@ export const profile = {
   exhibitionTitle: "Selected Works",
   years: "2024 to 2026",
   location: "Chiang Mai, Thailand",
+  // one-line intro under the name in the hero
+  tagline:
+    "A working catalogue of systems built, students taught, and problems solved, arranged as an exhibition.",
+  // phrase inside the first sentence of `summary` that the Statement underlines in coral
+  summaryHighlight: "everything around the code",
   summary:
     "Third-year Software Engineering student at Chiang Mai University, most interested in everything " +
     "around the code: requirements, design, process, and what happens after it ships. Competitive " +
