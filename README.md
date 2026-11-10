@@ -1,72 +1,35 @@
-# The Exhibition — Virawit Kongthong
+# Portfolio Website
 
-A personal portfolio that presents a software engineering CV through the design
-language of a dark art gallery. Each section is an "exhibit"; each role and project
-is a framed "piece" with a museum-style placard.
+My personal portfolio, designed as a minimalist gallery exhibition. Each CV section is an "exhibit" and each role or project is a framed "piece" with a museum-style placard, on a warm off-white and charcoal palette with a soft ochre accent.
 
-Built with **React 19 + TypeScript + Vite + Tailwind CSS v4**, with motion by
-**framer-motion** and icons by **lucide-react**.
+**Live site:** https://portfoliowebsite-teal-ten.vercel.app
 
-## Stack & conventions
+## Highlights
 
-- **Tailwind v4** — design tokens live in the `@theme` block in `src/index.css`
-  (Tailwind v4 does not auto-load `tailwind.config.js`). Utilities like `bg-ink`,
-  `text-bone`, `text-accent`, `font-display`, and `font-mono` come from there.
-- **Fonts** — `Fraunces` (display/body serif) and `IBM Plex Mono` (placards, labels,
-  metadata), loaded from Google Fonts in `index.html`.
-- **Content** — every CV fact is centralised in `src/data/cv.ts`. Edit that one file
-  to update the whole site; sections render from it.
+- **Content as data.** Every CV fact (profile, experience, projects, skills, awards) lives in one typed file, `src/data/cv.ts`. Sections render from it, so updating the site means editing one file.
+- **Project galleries.** Each project can carry screenshots, photos, or demo video in a framed viewer, with portrait and landscape layouts.
+- **Motion with restraint.** Scroll reveals and transitions use framer-motion and respect `prefers-reduced-motion`.
+- **Responsive.** Checked at phone, tablet, and desktop widths, with a mobile nav menu.
+
+## Tech stack
+
+- React 19 and TypeScript
+- Vite 7
+- Tailwind CSS v4 (design tokens in the `@theme` block of `src/index.css`)
+- framer-motion for animation, lucide-react and react-icons for icons
+- Fraunces and IBM Plex Mono, loaded from Google Fonts
+- Deployed on Vercel from `main`
 
 ## Project structure
 
 ```
 src/
-  data/cv.ts            # single source of truth for all CV content
-  components/           # reusable pieces (Frame, Placard, Nav, Footer, Reveal, ...)
-  sections/             # Hero, Statement, Exhibitions, Featured, Materials,
-                        #   Provenance, Recognition, Activities
-  pages/Home.tsx        # composes the full exhibition
-  index.css             # @theme tokens + base + grain/vignette
+  data/cv.ts          all CV content
+  sections/           Hero, Statement, Exhibitions, Projects, Materials,
+                      Provenance, Recognition, Activities
+  components/         Frame, Placard, ProjectMedia, TechIcon, Reveal, Nav, Footer, ...
+  pages/Home.tsx      composes the full page
+  index.css           theme tokens and base styles
+  assets/             portrait and project media
+public/               static files, including the Software Metrics report PDF
 ```
-
-## Local development
-
-```bash
-npm install
-npm run dev      # start the Vite dev server
-npm run build    # type-safe production build to dist/
-npm run preview  # preview the production build locally
-```
-
-## Deployment (Railway)
-
-The repo is configured to deploy as a static site on **Railway** via Nixpacks.
-
-- `railway.json` sets the build command (`npm run build`) and start command
-  (`serve -s dist -l tcp://0.0.0.0:$PORT`).
-- `serve` is a runtime dependency; `npm start` serves `dist/` on `$PORT`.
-
-### First-time setup
-
-1. Push this repo to GitHub (see branch workflow below).
-2. In Railway: **New Project → Deploy from GitHub repo** and pick this repository.
-3. Railway reads `railway.json` automatically — no extra config needed. It will run
-   `npm install`, `npm run build`, then `npm start`.
-4. Under the service **Settings → Networking**, click **Generate Domain** to get a
-   public URL.
-
-### Or via the Railway CLI
-
-```bash
-npm i -g @railway/cli
-railway login
-railway init        # create/link a project
-railway up          # build & deploy
-railway domain      # attach a public domain
-```
-
-## Branch workflow
-
-- `main` — production-ready.
-- `development` — integration branch.
-- `feature/*` — one branch per feature, merged into `development`.

@@ -1,0 +1,246 @@
+import { useState } from "react";
+import type { PointerEvent as ReactPointerEvent } from "react";
+import type { ProjectMedia as ProjectMediaItem } from "../data/cv";
+import type { DiagramId } from "../data/diagrams";
+import MermaidDiagram from "./MermaidDiagram";
+
+interface ProjectMediaProps {
+  media: ProjectMediaItem[];
+  name: string;
+  orientation?: "landscape" | "portrait";
+  /** set false when hosted inside Frame's full-bleed topMedia slot, which supplies its own edge */
+  bordered?: boolean;
+}
+
+function clampPercent(n: number) {
+  return Math.min(100, Math.max(0, Math.round(n)));
+}
+
+async function saveMediaPosition(alt: string, position: string | null) {
+  await fetch("/__set-media-position", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ alt, position }),
+  });
+}
+
+/**
+ * The image/video wall for a project. Renders a same-sized dashed
+ * placeholder when a project has no media yet, a single frame when it has
+ * exactly one, or a carousel with arrow/dot navigation when it has several.
+ * Frame shape follows `orientation` so an all-portrait media set (phone
+ * photos/video) gets a portrait frame instead of letterboxing into a wide one.
+ *
+ * In dev only (`npm run dev`), each media item also gets a reposition
+ * overlay: click the pencil, drag on the image to set its focal point, Save
+ * writes the resulting `position` straight into cv.ts via a dev-server-only
+ * endpoint (see vite.config.js). None of this exists in the production build.
+ */
+export default function ProjectMedia({ media, name, orientation = "landscape", bordered = true }: ProjectMediaProps) {
+  const [index, setIndex] = useState(0);
+  const item = media[index];
+  const aspectClass = orientation === "portrait" ? "aspect-[3/4]" : "aspect-[16/10]";
+
+  const [editing, setEditing] = useState(false);
+  const [pending, setPending] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  if (!item) {
+    return (
+      <div className={`flex ${aspectClass} w-full items-center justify-center border border-dashed border-line-strong bg-surface-2`}>
+        <div className="flex flex-col items-center gap-2 px-6 text-center">
+          <span className="font-label text-label uppercase tracking-[0.06em] text-fg-2">
+            Image coming soon
+          </span>
+          <span className="text-sm text-fg-2">{name}</span>
+        </div>
+      </div>
+    );
+  }
+
+  const goTo = (i: number) => setIndex((i + media.length) % media.length);
+  if (item.type === "diagram") {
+    return (
+      <div className="group relative">
+        <div className={`flex w-full items-center bg-surface-2 ${bordered ? "border border-line" : ""} ${media.length > 1 ? "pb-8" : ""}`}>
+          <MermaidDiagram diagram={item.src as DiagramId} label={item.alt} />
+        </div>
+        {media.length > 1 && (
+          <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2">
+            {media.map((m, i) => (
+              <button
+                key={m.src}
+                type="button"
+                aria-label={`Show diagram ${i + 1} of ${media.length} for ${name}`}
+                onClick={() => goTo(i)}
+                className={`h-3 w-3 border border-line-strong transition-colors duration-150 ${
+                  i === index ? "bg-ink" : "bg-surface hover:bg-line-strong"
+                }`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  const fit = item.fit ?? "cover";
+  const objectPosition = editing ? (pending ?? item.position ?? "50% 50%") : item.position;
+
+  const startEditing = () => {
+    setPending(item.position ?? "50% 50%");
+    setEditing(true);
+  };
+
+  const cancelEditing = () => {
+    setEditing(false);
+    setPending(null);
+  };
+
+  const drag = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if (e.buttons !== 1) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = clampPercent(((e.clientX - rect.left) / rect.width) * 100);
+    const y = clampPercent(((e.clientY - rect.top) / rect.height) * 100);
+    setPending(`${x}% ${y}%`);
+  };
+
+  const save = async () => {
+    setSaving(true);
+    await saveMediaPosition(item.alt, pending);
+    setSaving(false);
+    setEditing(false);
+    setPending(null);
+  };
+
+  const reset = async () => {
+    setSaving(true);
+    await saveMediaPosition(item.alt, null);
+    setSaving(false);
+    setEditing(false);
+    setPending(null);
+  };
+
+  return (
+    <div className="group relative">
+      <div
+        data-no-swipe={editing || media.length > 1 || undefined}
+        onPointerDown={editing ? drag : undefined}
+        onPointerMove={editing ? drag : undefined}
+        className={`flex ${aspectClass} w-full items-center justify-center overflow-hidden ${
+          bordered ? "border border-line" : ""
+        } ${fit === "contain" ? "bg-surface-2" : ""} ${editing ? "cursor-crosshair" : ""}`}
+      >
+        {item.type === "embed" ? (
+          <iframe
+            className="h-full w-full"
+            src={item.src}
+            title={item.alt}
+            loading="lazy"
+            allow="encrypted-media; picture-in-picture; fullscreen"
+            allowFullScreen
+          />
+        ) : item.type === "video" ? (
+          <video
+            className={`h-full w-full ${fit === "contain" ? "object-contain" : "object-cover"}`}
+            style={{ objectPosition }}
+            src={item.src}
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        ) : (
+          <img
+            className={`h-full w-full ${fit === "contain" ? "object-contain" : "object-cover"}`}
+            style={{ objectPosition }}
+            src={item.src}
+            alt={item.alt}
+          />
+        )}
+      </div>
+
+      {import.meta.env.DEV && !editing && item.type !== "embed" && (
+        <button
+          type="button"
+          aria-label={`Reposition ${item.alt}`}
+          onClick={startEditing}
+          className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center border border-line-strong bg-surface font-mono text-sm text-fg opacity-0 transition-opacity duration-150 hover:border-fg focus-visible:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
+        >
+          ✥
+        </button>
+      )}
+
+      {import.meta.env.DEV && editing && (
+        <div className="absolute inset-x-3 top-3 flex items-center justify-between gap-2">
+          <span className="bg-surface px-2 py-1 font-mono text-[10px] tracking-[0.15em] text-fg">
+            {pending ?? item.position ?? "50% 50%"}
+          </span>
+          <div className="flex gap-2">
+            {item.position && (
+              <button
+                type="button"
+                onClick={reset}
+                disabled={saving}
+                className="bg-surface px-2 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-fg-2 hover:text-fg disabled:opacity-50"
+              >
+                Reset
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={cancelEditing}
+              disabled={saving}
+              className="bg-surface px-2 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-fg-2 hover:text-fg disabled:opacity-50"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={save}
+              disabled={saving}
+              className="bg-fg px-2 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-bg disabled:opacity-50"
+            >
+              {saving ? "Saving…" : "Save"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {media.length > 1 && !editing && (
+        <>
+          <button
+            type="button"
+            aria-label={`Previous image for ${name}`}
+            onClick={() => goTo(index - 1)}
+            className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-line-strong bg-surface font-mono text-lg text-fg opacity-0 transition-opacity duration-150 hover:border-fg focus-visible:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            aria-label={`Next image for ${name}`}
+            onClick={() => goTo(index + 1)}
+            className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-line-strong bg-surface font-mono text-lg text-fg opacity-0 transition-opacity duration-150 hover:border-fg focus-visible:opacity-100 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
+          >
+            ›
+          </button>
+
+          <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-2">
+            {media.map((m, i) => (
+              <button
+                key={m.src}
+                type="button"
+                aria-label={`Show image ${i + 1} of ${media.length} for ${name}`}
+                onClick={() => goTo(i)}
+                className={`h-2 w-2 border border-line-strong transition-colors duration-150 ${
+                  i === index ? "bg-ink" : "bg-surface hover:bg-line-strong"
+                }`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}

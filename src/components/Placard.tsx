@@ -11,7 +11,7 @@ interface PlacardProps {
  */
 export default function Placard({ title, institution, medium, year }: PlacardProps) {
   return (
-    <div className="flex items-baseline justify-between gap-4">
+    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 sm:flex-nowrap">
       <div>
         <h3 className="font-display text-xl font-medium leading-tight text-bone sm:text-2xl">
           {title}
@@ -27,7 +27,9 @@ export default function Placard({ title, institution, medium, year }: PlacardPro
           </p>
         )}
       </div>
-      <span className="shrink-0 font-mono text-[12px] tracking-[0.12em] text-ash">{year}</span>
+      <span className="shrink-0 whitespace-nowrap font-mono text-[12px] tracking-[0.12em] text-ash">
+        {year}
+      </span>
     </div>
   );
 }
