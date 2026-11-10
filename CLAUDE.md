@@ -19,12 +19,12 @@ There is no test suite. Type checking happens through the editor / `tsc`; `npm r
 
 ## Architecture
 
-- **Content is data, not markup.** Every CV fact (profile, contacts, experiences, education, projects, skills, accolades) lives in `src/data/cv.ts` as typed exports. This is the single source of truth — edit it to change site content. Sections in `src/sections/` render from these exports; do not hardcode CV text into components.
+- **Content is data, not markup.** Every CV fact (profile, contacts, experiences, education, projects, skills, accolades) lives in `src/data/cv.ts` as typed exports. This is the single source of truth: edit it to change site content. Sections in `src/sections/` render from these exports; do not hardcode CV text into components.
 - **Composition.** `src/pages/Home.tsx` composes `Nav`, the Hero, then one continuous `GlyphSky` haze fixed behind the remaining rooms, then `Footer` (which ends in a full-ink sky). `src/sections/` holds one file per room (Hero, Statement, Exhibitions, Projects, Materials, Education, Activities). Each room opens with `SectionHeader`, which draws the "Room 0N" sign and numeral. `src/components/` holds reusable pieces: `Frame` (framed card), `Placard` (label), `ProjectMedia` (image/video/embed/diagram gallery), `MermaidDiagram`, `TechIcon`, `Reveal` (scroll-in wrapper), `GlyphSky` (ASCII canvas skies), `Nav` (includes the theme toggle), `Footer`, `SectionHeader`. `src/lib/glyphs.ts` has the glyph helpers and `src/lib/theme.ts` the theme hook and canvas color readers.
 - **Diagrams.** Project flowcharts are mermaid sources in `src/data/diagrams.ts`, built as functions of the current theme colors so they re-render on a theme switch. A media item with `type: "diagram"` uses `src` as the diagram id.
 - **Entry point** is `src/main.jsx` (mixed `.jsx`/`.tsx` in the tree is intentional and fine). It imports the fontsource CSS.
 
-## Tailwind v4 — important
+## Tailwind v4: important
 
 This is **Tailwind v4** (`@tailwindcss/postcss`, `@import "tailwindcss"`). v4 does **not** auto-load `tailwind.config.js`. Design tokens are defined in the `@theme` block in `src/index.css`, which generates utilities such as `bg-bg`, `bg-surface`, `bg-surface-2`, `text-fg`, `text-fg-2`, `text-accent`, `text-ink`, `border-line`, `border-line-strong`, `font-display`, `font-label`. To add or change a color or font, edit the `@theme` block, not `tailwind.config.js`.
 
@@ -36,7 +36,7 @@ Fonts are self-hosted through `@fontsource` (latin subsets, imported in `src/mai
 
 ## Motion
 
-framer-motion with `prefers-reduced-motion` support. Note a v12 typing gotcha: cubic-bezier ease arrays must be typed as a fixed-length tuple, e.g. `const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];`, and variant objects typed as `Variants` — a bare `number[]` is rejected by the `Easing` type. See `src/sections/Hero.tsx` and `src/components/Reveal.tsx`.
+framer-motion with `prefers-reduced-motion` support. Note a v12 typing gotcha: cubic-bezier ease arrays must be typed as a fixed-length tuple, e.g. `const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];`, and variant objects typed as `Variants`: a bare `number[]` is rejected by the `Easing` type. See `src/sections/Hero.tsx` and `src/components/Reveal.tsx`.
 
 ## Deployment
 
@@ -46,7 +46,7 @@ If you add a dependency, keep `package-lock.json` in sync (`npm install --packag
 
 ## Build caveat
 
-`vite build` may hang at "transforming..." at 0% CPU in some local/background-job sessions due to an esbuild service-mode IPC stall — this is environmental, not a code defect. When a local build hangs, verify via the dev server and rely on the Vercel cloud build for real verification rather than assuming the code is broken.
+`vite build` may hang at "transforming..." at 0% CPU in some local/background-job sessions due to an esbuild service-mode IPC stall: this is environmental, not a code defect. When a local build hangs, verify via the dev server and rely on the Vercel cloud build for real verification rather than assuming the code is broken.
 
 ## Branch workflow
 
